@@ -2,6 +2,7 @@
 import config from './config.json';
 
 export const members = config.members;
+export const imageBasePath = config.imageBasePath || '/images/';
 
 // 2shot Round Configuration (from config.json)
 export const rounds = config.rounds.map(r => ({
@@ -23,12 +24,14 @@ export const memberScheduleConfig = {
   // June 13, 2026
   '2026-06-13': {
     default: config.memberSchedule.default,
-    laneConfig: config.memberSchedule['2026-06-13'].laneConfig
+    laneConfig: config.memberSchedule['2026-06-13'].laneConfig,
+    slotImages: config.memberSchedule['2026-06-13'].slotImages || {}
   },
   // June 14, 2026
   '2026-06-14': {
     default: config.memberSchedule.default,
-    laneConfig: config.memberSchedule['2026-06-14'].laneConfig
+    laneConfig: config.memberSchedule['2026-06-14'].laneConfig,
+    slotImages: config.memberSchedule['2026-06-14'].slotImages || {}
   }
 };
 
@@ -80,6 +83,17 @@ export const initialActivities = generateActivities();
 
 // Helper functions
 export const getMemberById = (id) => members.find(m => m.id === id);
+
+export const getSlotImageData = (memberId, memberName, date, roundNumber) => {
+  const dateConfig = memberScheduleConfig[date];
+  if (!dateConfig?.slotImages) return null;
+  const slot = dateConfig.slotImages[memberId]?.[String(roundNumber)];
+  if (!slot) return null;
+  return {
+    imageUrl: `${import.meta.env.BASE_URL}${imageBasePath}${memberName}/${slot.image}`,
+    desc: slot.desc || ''
+  };
+};
 
 export const formatDate = (dateStr) => {
   const date = new Date(dateStr);

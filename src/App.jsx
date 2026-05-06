@@ -11,7 +11,8 @@ import {
   getRoundTime,
   getLane,
   rounds,
-  eventDates
+  eventDates,
+  getSlotImageData
 } from './data/members';
 
 // LocalStorage keys
@@ -43,6 +44,7 @@ function App() {
   const [showTicketModal, setShowTicketModal] = useState(false);
   const [ticketModalData, setTicketModalData] = useState(null);
   const [ticketCount, setTicketCount] = useState(1);
+  const [ticketImageError, setTicketImageError] = useState(false);
 
   // Save plan selections to localStorage whenever they change
   useEffect(() => {
@@ -71,8 +73,10 @@ function App() {
   const openTicketModal = (memberId, round, memberName, roundTime, date) => {
     const key = `${memberId}_${date}_${round}`;
     const currentCount = planSelections[key] || 1;
-    setTicketModalData({ memberId, round, memberName, roundTime, date });
+    const slotImageData = getSlotImageData(memberId, memberName, date, round);
+    setTicketModalData({ memberId, round, memberName, roundTime, date, slotImageData });
     setTicketCount(currentCount);
+    setTicketImageError(false);
     setShowTicketModal(true);
   };
 
@@ -81,6 +85,7 @@ function App() {
     setShowTicketModal(false);
     setTicketModalData(null);
     setTicketCount(1);
+    setTicketImageError(false);
   };
 
   // Confirm ticket count
@@ -255,6 +260,24 @@ function App() {
               <button className="close-btn" onClick={closeTicketModal}>×</button>
             </div>
             <div className="ticket-modal-body">
+              {ticketModalData.slotImageData && (
+                ticketImageError ? (
+                  <div className="slot-desc-container">
+                    <p className="slot-desc">
+                      {ticketModalData.slotImageData.desc || 'เมมเบอร์ยังไม่แจ้งชุด'}
+                    </p>
+                  </div>
+                ) : (
+                  <div className="slot-image-container">
+                    <img
+                      src={ticketModalData.slotImageData.imageUrl}
+                      alt={ticketModalData.memberName}
+                      className="slot-image"
+                      onError={() => setTicketImageError(true)}
+                    />
+                  </div>
+                )
+              )}
               <div className="ticket-info">
                 <span className="member-name" style={{ color: members.find(m => m.id === ticketModalData.memberId)?.color }}>
                   {ticketModalData.memberName}
@@ -614,7 +637,7 @@ function SummaryView({ activities, selectedMembers }) {
                             {item.members.map((m, i) => (
                               <span key={i}>
                                 <span style={{ color: m.memberColor }}>
-                                  {m.memberName} ×{m.ticketCount}
+                                  {m.memberName} × {m.ticketCount}
                                 </span>
                                 {i < item.members.length - 1 && (
                                   <span style={{ color: '#FFFFFF' }}> / </span>
