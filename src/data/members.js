@@ -98,18 +98,18 @@ export const getSlotImageData = (memberId, memberName, date, roundNumber) => {
 export const formatDate = (dateStr) => {
   const date = new Date(dateStr);
   const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-  return date.toLocaleDateString('th-TH', options);
+  return date.toLocaleDateString('en-US', options);
 };
 
 export const formatShortDate = (dateStr) => {
   const date = new Date(dateStr);
   const options = { month: 'short', day: 'numeric' };
-  return date.toLocaleDateString('th-TH', options);
+  return date.toLocaleDateString('en-US', options);
 };
 
 export const getDayName = (dateStr) => {
   const date = new Date(dateStr);
-  const days = ['อาทิตย์', 'จันทร์', 'อังคาร', 'พุธ', 'พฤหัสบดี', 'ศุกร์', 'เสาร์'];
+  const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   return days[date.getDay()];
 };
 

@@ -2,7 +2,7 @@
 
 ## 1. Project Overview
 
-- **Project Name**: Sisaster Team - BNK48 2-Shot Ponytail Planner
+- **Project Name**: BNK48 2-Shot Ponytail Planner made by L BNK48 Fandom
 - **Type**: React Web Application
 - **Core Functionality**: A planner system to manage and view 2shot activity schedules for BNK48 members
 - **Target Users**: BNK48 fans who want to track member activities

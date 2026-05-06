@@ -186,12 +186,12 @@ function App() {
         <div className="header-content">
           <div className="logo">
             <div className="logo-icon">B</div>
-            <h1>Sisaster Team - BNK48 2-Shot Ponytail Planner</h1>
+            <h1>BNK48 2-Shot Ponytail Planner made by L BNK48 Fandom</h1>
           </div>
           <div className="member-selector">
-            <button className="filter-link" onClick={handleOpenModal}>
-              🔍 เลือกตามเมมเบอร์
-            </button>
+            🔍<button className="filter-link" onClick={handleOpenModal}>
+                Select by member
+              </button>
             <span className="selected-info">
               {getSelectedMemberNames()}
             </span>
@@ -204,22 +204,22 @@ function App() {
         <div className="modal-overlay" onClick={handleCloseModal}>
           <div className="modal-content" onClick={e => e.stopPropagation()}>
             <div className="modal-header">
-              <h2>เลือกเมมเบอร์</h2>
+              <h2>Select Members</h2>
               <button className="close-btn" onClick={handleCloseModal}>×</button>
             </div>
             <div className="modal-filter">
               <input
                 type="text"
                 className="member-filter-input"
-                placeholder="ค้นหาเมมเบอร์ (ชื่อ หรือ Gen)..."
+                placeholder="Filter member name..."
                 value={memberFilter}
                 onChange={(e) => setMemberFilter(e.target.value)}
                 autoFocus
               />
             </div>
             <div className="modal-actions">
-              <button className="action-btn" onClick={handleSelectAll}>เลือกทั้งหมด</button>
-              <button className="action-btn" onClick={handleClearAll}>ล้างทั้งหมด</button>
+              <button className="action-btn" onClick={handleSelectAll}>Select All</button>
+              <button className="action-btn" onClick={handleClearAll}>Clear All</button>
             </div>
             <div className="member-list">
               {filteredMembers.map(member => (
@@ -241,10 +241,10 @@ function App() {
             </div>
             <div className="modal-footer">
               <span className="selected-count">
-                {tempSelectedMembers.length} คน selected
+                {tempSelectedMembers.length} members selected
               </span>
               <button className="confirm-btn" onClick={handleConfirmSelection}>
-                ตกลง
+                Confirm
               </button>
             </div>
           </div>
@@ -282,7 +282,7 @@ function App() {
                 <span className="member-name" style={{ color: members.find(m => m.id === ticketModalData.memberId)?.color }}>
                   {ticketModalData.memberName}
                 </span>
-                <span className="round-info">รอบ {ticketModalData.round} ({ticketModalData.roundTime})</span>
+                <span className="round-info">Round {ticketModalData.round} ({ticketModalData.roundTime})</span>
               </div>
               <div className="ticket-counter">
                 <button 
@@ -326,13 +326,13 @@ function App() {
             className={`tab-button ${activeTab === 'schedule' ? 'active' : ''}`}
             onClick={() => setActiveTab('schedule')}
           >
-            📅 ตารางกิจกรรม
+            📅  Schedule
           </button>
           <button
             className={`tab-button ${activeTab === 'summary' ? 'active' : ''}`}
             onClick={() => setActiveTab('summary')}
           >
-            📊 สรุป
+            📊 Summary
           </button>
         </nav>
 
@@ -375,8 +375,8 @@ function ScheduleView({ activities, planSelections, onOpenTicketModal }) {
       <div className="schedule-view">
         <div className="empty-state">
           <div className="icon">📅</div>
-          <h3>ไม่มีกิจกรรม</h3>
-          <p>ไม่มีกิจกรรม 2shot ในช่วงเวลาที่เลือก</p>
+          <h3>No Activities</h3>
+          <p>There are no 2-shot activities in the selected time range</p>
         </div>
       </div>
     );
@@ -402,11 +402,11 @@ function ScheduleView({ activities, planSelections, onOpenTicketModal }) {
             <table className="schedule-table">
               <thead>
                 <tr>
-                  <th className="member-column">เมมเบอร์</th>
+                  <th className="member-column">Member</th>
                   {rounds.map(round => (
                     <th key={round.round} className="round-column">
                       <div className="round-header">
-                        <span className="round-number">รอบ {round.round}</span>
+                        <span className="round-number">Round {round.round}</span>
                         <span className="round-time">{round.time}</span>
                       </div>
                     </th>
@@ -467,7 +467,7 @@ function ScheduleView({ activities, planSelections, onOpenTicketModal }) {
               <table className="mobile-schedule-table">
                 <thead>
                   <tr>
-                    <th className="mobile-round-col">รอบ</th>
+                    <th className="mobile-round-col">Round</th>
                     {activeMembersOnDate.map(member => (
                       <th key={member.id} className="mobile-member-th" style={{ color: member.color }}>
                         {member.name}
@@ -479,7 +479,7 @@ function ScheduleView({ activities, planSelections, onOpenTicketModal }) {
                   {activeRoundsOnDate.map(round => (
                     <tr key={round.round}>
                       <td className="mobile-round-td">
-                        <div className="mobile-round-num">รอบ {round.round}</div>
+                        <div className="mobile-round-num">Round {round.round}</div>
                         <div className="mobile-round-time-sm">{round.time.replace(' - ', '-')}</div>
                       </td>
                       {activeMembersOnDate.map(member => {
@@ -615,9 +615,9 @@ function SummaryView({ activities, selectedMembers }) {
             <table className="summary-table">
               <thead>
                 <tr>
-                  <th className="round-col">รอบ</th>
-                  <th>เมมเบอร์</th>
-                  <th className="price-col">ราคา</th>
+                  <th className="round-col">Round</th>
+                  <th>Member</th>
+                  <th className="price-col">Price</th>
                 </tr>
               </thead>
               <tbody>
@@ -627,7 +627,7 @@ function SummaryView({ activities, selectedMembers }) {
                     <tr key={index}>
                       <td>
                         <span className="round-badge">
-                          รอบ {item.round}<br />
+                          Round {item.round}<br />
                           <span className="round-time-small">{item.time}</span>
                         </span>
                       </td>
@@ -646,7 +646,7 @@ function SummaryView({ activities, selectedMembers }) {
                             ))}
                           </div>
                         ) : (
-                          <span className="no-member-text">ไม่มีเมมเบอร์ที่คุณเลือกถ่าย 2-shot</span>
+                          <span className="no-member-text">No members selected for 2-shot</span>
                         )}
                       </td>
                       <td className="price-col">
@@ -667,7 +667,7 @@ function SummaryView({ activities, selectedMembers }) {
 
       {grandTotal > 0 && (
         <div className="grand-total-box">
-          <span className="grand-total-label">รวมค่าใช้จ่ายทั้งหมด</span>
+          <span className="grand-total-label">Grand Total</span>
           <span className="grand-total-amount">฿{grandTotal.toLocaleString()}</span>
         </div>
       )}
