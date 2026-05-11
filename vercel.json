@@ -1,0 +1,7 @@
+{
+  "rewrites": [
+    { "source": "/2shot_smg", "destination": "/index.html" },
+    { "source": "/2shot_smg/(.*)", "destination": "/index.html" },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}
