@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import ProjectSwitcher from '../components/ProjectSwitcher';
 import {
   members,
   getMemberById,
@@ -122,12 +123,15 @@ function SmgApp() {
             <div className="logo-icon smg-logo-icon">S</div>
             <h1>Shock Me Girls - Locker Box Planner</h1>
           </div>
-          <div className="member-selector">
-            🔍
-            <button className="filter-link" onClick={handleOpenModal}>
-              Select by member
-            </button>
-            <span className="selected-info">{getSelectedMemberNames()}</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '16px', flexWrap: 'wrap' }}>
+            <ProjectSwitcher />
+            <div className="member-selector">
+              🔍
+              <button className="filter-link" onClick={handleOpenModal}>
+                Select by member
+              </button>
+              <span className="selected-info">{getSelectedMemberNames()}</span>
+            </div>
           </div>
         </div>
       </header>

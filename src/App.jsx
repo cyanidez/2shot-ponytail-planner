@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import ProjectSwitcher from './components/ProjectSwitcher';
 import {
   members,
   initialActivities,
@@ -188,13 +189,16 @@ function App() {
             <div className="logo-icon">B</div>
             <h1>BNK48 2-Shot Ponytail Planner made by L BNK48 Fandom</h1>
           </div>
-          <div className="member-selector">
-            🔍<button className="filter-link" onClick={handleOpenModal}>
-                Select by member
-              </button>
-            <span className="selected-info">
-              {getSelectedMemberNames()}
-            </span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '16px', flexWrap: 'wrap' }}>
+            <ProjectSwitcher />
+            <div className="member-selector">
+              🔍<button className="filter-link" onClick={handleOpenModal}>
+                  Select by member
+                </button>
+              <span className="selected-info">
+                {getSelectedMemberNames()}
+              </span>
+            </div>
           </div>
         </div>
       </header>
