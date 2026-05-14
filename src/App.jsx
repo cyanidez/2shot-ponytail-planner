@@ -327,6 +327,12 @@ function App() {
       <main className="main-content">
         <nav className="tab-navigation">
           <button
+            className={`tab-button ${activeTab === 'now' ? 'active' : ''}`}
+            onClick={() => setActiveTab('now')}
+          >
+            🕐 Now
+          </button>
+          <button
             className={`tab-button ${activeTab === 'schedule' ? 'active' : ''}`}
             onClick={() => setActiveTab('schedule')}
           >
@@ -342,8 +348,10 @@ function App() {
 
         {activeTab === 'schedule' ? (
           <ScheduleView activities={filteredActivities} planSelections={planSelections} onOpenTicketModal={openTicketModal} />
-        ) : (
+        ) : activeTab === 'summary' ? (
           <SummaryView activities={filteredActivities} selectedMembers={selectedMembers} />
+        ) : (
+          <NowView activities={activities} planSelections={planSelections} />
         )}
       </main>
 
@@ -673,6 +681,105 @@ function SummaryView({ activities, selectedMembers }) {
         <div className="grand-total-box">
           <span className="grand-total-label">Grand Total</span>
           <span className="grand-total-amount">฿{grandTotal.toLocaleString()}</span>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function NowView({ activities, planSelections }) {
+  const [now, setNow] = useState(new Date());
+
+  useEffect(() => {
+    const timer = setInterval(() => setNow(new Date()), 10000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const pad = (n) => String(n).padStart(2, '0');
+  const timeStr = `${pad(now.getHours())}:${pad(now.getMinutes())}`;
+  const todayStr = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
+  const currentMinutes = now.getHours() * 60 + now.getMinutes();
+
+  const parseRoundTime = (t) => {
+    const [s, e] = t.split(' - ');
+    const toMin = (x) => { const [h, m] = x.split(':').map(Number); return h * 60 + m; };
+    return { start: toMin(s), end: toMin(e) };
+  };
+
+  const getRoundStatus = (round) => {
+    const { start, end } = parseRoundTime(round.time);
+    if (currentMinutes >= start && currentMinutes < end) return 'active';
+    if (currentMinutes < start) return 'upcoming';
+    return 'ended';
+  };
+
+  const isEventDay = eventDates.includes(todayStr);
+  const activeRound = isEventDay ? rounds.find(r => getRoundStatus(r) === 'active') : null;
+  const dateActivities = activities.filter(a => a.date === todayStr);
+
+  const plannedActivities = activeRound
+    ? dateActivities.filter(a => {
+        if (a.round !== activeRound.round) return false;
+        const key = `${a.memberId}_${todayStr}_${activeRound.round}`;
+        return (planSelections[key] || 0) > 0;
+      })
+    : [];
+
+  const dateIdx = eventDates.indexOf(todayStr);
+  const dateClass = dateIdx === 0 ? 'date-purple' : 'date-red';
+
+  return (
+    <div className="now-view">
+      <div className="now-clock-bar">
+        <span className="now-clock-time">{timeStr}</span>
+        <span className="now-clock-label">เวลาปัจจุบัน</span>
+      </div>
+
+      {!isEventDay ? (
+        <div className="now-empty-state">
+          <div className="now-empty-icon">📅</div>
+          <p>วันนี้ไม่ใช่วันงาน</p>
+        </div>
+      ) : !activeRound ? (
+        <div className="now-empty-state">
+          <div className="now-empty-icon">⏳</div>
+          <p>ยังไม่มี Round ที่กำลังดำเนินอยู่ตอนนี้</p>
+        </div>
+      ) : (
+        <div className={`now-date-section ${dateClass}`}>
+          <div className="now-date-header">
+            <span className="now-date-text">{formatShortDate(todayStr)}</span>
+            <span className="now-day-name">{getDayName(todayStr)}</span>
+            <span className="now-badge today-badge">วันนี้</span>
+          </div>
+          <div className="now-rounds-list">
+            <div className="now-round-block now-active">
+              <div className="now-round-header">
+                <span className="now-round-num">Round {activeRound.round}</span>
+                <span className="now-round-time">{activeRound.time}</span>
+                <span className="now-status-badge live-badge">● LIVE</span>
+              </div>
+              {plannedActivities.length === 0 ? (
+                <p className="now-no-plan">ไม่มีแผนใน Round นี้</p>
+              ) : (
+                <div className="now-members-wrap">
+                  {plannedActivities.map(activity => {
+                    const member = members.find(m => m.id === activity.memberId);
+                    if (!member) return null;
+                    const key = `${activity.memberId}_${todayStr}_${activeRound.round}`;
+                    const tickets = planSelections[key];
+                    return (
+                      <div key={activity.memberId} className="now-member-chip" style={{ borderColor: member.color }}>
+                        <span className="now-member-name" style={{ color: member.color }}>{member.name}</span>
+                        <span className="now-member-lane">{activity.location}</span>
+                        <span className="now-ticket-dot" style={{ background: member.color }}>×{tickets}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          </div>
         </div>
       )}
     </div>

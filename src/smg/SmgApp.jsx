@@ -265,6 +265,12 @@ function SmgApp() {
 
         <nav className="tab-navigation">
           <button
+            className={`tab-button ${activeTab === 'now' ? 'active' : ''}`}
+            onClick={() => setActiveTab('now')}
+          >
+            🕐 Now
+          </button>
+          <button
             className={`tab-button ${activeTab === 'schedule' ? 'active' : ''}`}
             onClick={() => setActiveTab('schedule')}
           >
@@ -287,7 +293,7 @@ function SmgApp() {
             activityType={activityType}
             onOpenTicketModal={openTicketModal}
           />
-        ) : (
+        ) : activeTab === 'summary' ? (
           <SmgSummaryView
             activities={filteredActivities}
             selectedMembers={selectedMembers}
@@ -297,6 +303,8 @@ function SmgApp() {
             price={price}
             planKey={PLAN_KEY(activityType)}
           />
+        ) : (
+          <SmgNowView planSelections_mr={loadPlan('meet_receive')} planSelections_2shot={loadPlan('2shot')} />
         )}
       </main>
 
@@ -578,6 +586,123 @@ function SmgSummaryView({ activities, selectedMembers, rounds, eventDates, price
         <div className="grand-total-box">
           <span className="grand-total-label">Grand Total</span>
           <span className="grand-total-amount">฿{grandTotal.toLocaleString()}</span>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function SmgNowView({ planSelections_mr, planSelections_2shot }) {
+  const [now, setNow] = useState(new Date());
+
+  useEffect(() => {
+    const timer = setInterval(() => setNow(new Date()), 10000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const pad = (n) => String(n).padStart(2, '0');
+  const timeStr = `${pad(now.getHours())}:${pad(now.getMinutes())}`;
+  const todayStr = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
+  const currentMinutes = now.getHours() * 60 + now.getMinutes();
+
+  const parseRoundTime = (t) => {
+    const [s, e] = t.split(' - ');
+    const toMin = (x) => { const [h, m] = x.split(':').map(Number); return h * 60 + m; };
+    return { start: toMin(s), end: toMin(e) };
+  };
+
+  const getRoundStatus = (round) => {
+    const { start, end } = parseRoundTime(round.time);
+    if (currentMinutes >= start && currentMinutes < end) return 'active';
+    if (currentMinutes < start) return 'upcoming';
+    return 'ended';
+  };
+
+  const allEventDates = [...new Set([
+    ...getEventDates('meet_receive'),
+    ...getEventDates('2shot'),
+  ])].sort();
+
+  const isEventDay = allEventDates.includes(todayStr);
+
+  const activityTypes = [
+    { key: 'meet_receive', label: 'Meet & Receive', planSelections: planSelections_mr },
+    { key: '2shot', label: '2-Shot', planSelections: planSelections_2shot },
+  ];
+
+  const activeTypes = isEventDay
+    ? activityTypes.map(({ key, label, planSelections }) => {
+        const typeRounds = getRounds(key);
+        const typeActivities = generateActivities(key).filter(a => a.date === todayStr);
+        const activeRound = typeRounds.find(r => getRoundStatus(r) === 'active') || null;
+        if (!activeRound) return null;
+        const plannedActivities = typeActivities.filter(a => {
+          if (a.round !== activeRound.round) return false;
+          const k = `${a.memberId}_${todayStr}_${activeRound.round}`;
+          return (planSelections[k] || 0) > 0;
+        });
+        return { key, label, activeRound, plannedActivities, planSelections, typeRounds };
+      }).filter(Boolean)
+    : [];
+
+  return (
+    <div className="now-view">
+      <div className="now-clock-bar">
+        <span className="now-clock-time">{timeStr}</span>
+        <span className="now-clock-label">เวลาปัจจุบัน</span>
+      </div>
+
+      {!isEventDay ? (
+        <div className="now-empty-state">
+          <div className="now-empty-icon">📅</div>
+          <p>วันนี้ไม่ใช่วันงาน</p>
+        </div>
+      ) : activeTypes.length === 0 ? (
+        <div className="now-empty-state">
+          <div className="now-empty-icon">⏳</div>
+          <p>ยังไม่มี Round ที่กำลังดำเนินอยู่ตอนนี้</p>
+        </div>
+      ) : (
+        <div className="now-date-section date-pink">
+          <div className="now-date-header">
+            <span className="now-date-text">{formatShortDate(todayStr)}</span>
+            <span className="now-day-name">{getDayName(todayStr)}</span>
+            <span className="now-badge today-badge">วันนี้</span>
+          </div>
+          {activeTypes.map(({ key, label, activeRound, plannedActivities, planSelections: ps }) => (
+            <div key={key} className="now-activity-type-section">
+              <div className="now-activity-type-label">{label}</div>
+              <div className="now-rounds-list">
+                <div className="now-round-block now-active">
+                  <div className="now-round-header">
+                    <span className="now-round-num">Round {activeRound.round}</span>
+                    <span className="now-round-time">{activeRound.time}</span>
+                    {activeRound.close && <span className="now-round-close">Close {activeRound.close}</span>}
+                    <span className="now-status-badge live-badge">● LIVE</span>
+                  </div>
+                  {plannedActivities.length === 0 ? (
+                    <p className="now-no-plan">ไม่มีแผนใน Round นี้</p>
+                  ) : (
+                    <div className="now-members-wrap">
+                      {plannedActivities.map(activity => {
+                        const member = members.find(m => m.id === activity.memberId);
+                        if (!member) return null;
+                        const k = `${activity.memberId}_${todayStr}_${activeRound.round}`;
+                        const tickets = ps[k];
+                        return (
+                          <div key={activity.memberId} className="now-member-chip" style={{ borderColor: member.color }}>
+                            <span className="now-member-name" style={{ color: member.color }}>{member.name}</span>
+                            <span className="now-member-lane">{activity.lane}</span>
+                            <span className="now-ticket-dot" style={{ background: member.color }}>×{tickets}</span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       )}
     </div>

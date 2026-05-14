@@ -125,3 +125,26 @@
   border-bottom: 2px solid #e91e63;
   color: #f48fb1;
 }
+
+/* ===== SMG Now View ===== */
+.smg-app .now-date-section.date-pink .now-date-header {
+  background: rgba(233, 30, 99, 0.2);
+}
+
+.now-activity-type-section {
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.now-activity-type-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: rgba(255, 255, 255, 0.4);
+  padding: 8px 16px 4px;
+}
+
+.now-round-close {
+  font-size: 0.72rem;
+  color: rgba(255, 193, 7, 0.6);
+}
