@@ -154,6 +154,7 @@ function OnCloud9App() {
         {[
           { id: 'happening', label: '🕐 NOW' },
           { id: 'planner',   label: '📅 Planner' },
+          { id: 'members',   label: '👤 Members' },
           { id: 'summary',   label: '📊 Summary' },
         ].map(t => (
           <button
@@ -179,6 +180,7 @@ function OnCloud9App() {
             setFanmeetPlan={setFanmeetPlan}
           />
         )}
+        {activeTab === 'members' && <MemberScheduleView filterMemberIds={filterMemberIds} planSelections={planSelections} onCellClick={openModal} />}
         {activeTab === 'summary' && (
           <SummaryView
             planSelections={planSelections}
@@ -721,6 +723,139 @@ function FanmeetHappening({ date, nowMinutes }) {
           <div className="oc9-fanmeet-label">{fm.label}</div>
         </div>
       ))}
+    </div>
+  );
+}
+
+// ─── Member Schedule View ─────────────────────────────────────────────────────
+
+function MemberScheduleView({ filterMemberIds, planSelections, onCellClick }) {
+  const [search, setSearch] = useState('');
+  const [selectedGroup, setSelectedGroup] = useState('ALL');
+
+  const groups = ['ALL', 'BNK48', 'CGM48'];
+  const filterSet = filterMemberIds.length > 0 ? new Set(filterMemberIds) : null;
+
+  const filtered = members.filter(m => {
+    const matchGroup = selectedGroup === 'ALL' || m.group === selectedGroup;
+    const matchSearch = m.name.toLowerCase().includes(search.toLowerCase());
+    return matchGroup && matchSearch;
+  });
+
+  return (
+    <div className="oc9-ms-wrap">
+      <div className="oc9-ms-toolbar">
+        <input
+          className="oc9-ms-search"
+          placeholder="ค้นหาชื่อ..."
+          value={search}
+          onChange={e => setSearch(e.target.value)}
+        />
+        <div className="oc9-ms-group-tabs">
+          {groups.map(g => (
+            <button
+              key={g}
+              className={`oc9-ms-group-btn ${selectedGroup === g ? 'active' : ''}`}
+              onClick={() => setSelectedGroup(g)}
+            >{g}</button>
+          ))}
+        </div>
+      </div>
+
+      <div className="oc9-ms-list">
+        {filtered.map(member => (
+          <MemberScheduleCard
+            key={member.id}
+            member={member}
+            dimmed={filterSet !== null && !filterSet.has(member.id)}
+            planSelections={planSelections}
+            onCellClick={onCellClick}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function MemberScheduleCard({ member, dimmed, planSelections, onCellClick }) {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <div className={`oc9-ms-card ${dimmed ? 'oc9-ms-card--dimmed' : ''}`} style={{ '--mc': member.color }}>
+      <div className="oc9-ms-card-header" onClick={() => setOpen(o => !o)}>
+        <div className="oc9-ms-card-left">
+          <div className="oc9-ms-photo">
+            <img
+              src={getMemberImageUrl(member.name)}
+              alt={member.name}
+              onError={e => { e.target.style.display = 'none'; e.target.nextSibling.style.display = 'flex'; }}
+            />
+            <div className="oc9-ms-initial" style={{ display: 'none', background: member.color }}>
+              {member.name[0]}
+            </div>
+          </div>
+          <div>
+            <div className="oc9-ms-name" style={{ color: member.color }}>{member.name}</div>
+            <div className="oc9-ms-gen">{member.group} Gen {member.generation}</div>
+          </div>
+        </div>
+        <span className="oc9-collapse-icon">{open ? '▲' : '▼'}</span>
+      </div>
+
+      {open && (
+        <div className="oc9-ms-body">
+          {eventDates.map(date => {
+            const [y, m, dd] = date.split('-').map(Number);
+            const day = new Date(y, m - 1, dd).getDay();
+            const dateColor = day === 6 ? '#7c3aed' : day === 0 ? '#dc2626' : '#eab308';
+
+            const slots = [];
+            Object.entries(schedule[date] || {}).forEach(([actId, actSlots]) => {
+              Object.entries(actSlots).forEach(([slot, arr]) => {
+                const stationIdx = arr.indexOf(member.id);
+                if (stationIdx !== -1) {
+                  const act = getActivityById(actId);
+                  const station = stationIdx + 1;
+                  const k = planKey(actId, date, slot, station);
+                  const count = planSelections[k] || 0;
+                  slots.push({ slot, act, actId, station, count });
+                }
+              });
+            });
+            slots.sort((a, b) => a.slot.localeCompare(b.slot));
+
+            return (
+              <div key={date} className="oc9-ms-day">
+                <div className="oc9-ms-day-label" style={{ color: dateColor }}>
+                  {getDayName(date)} · {formatShortDate(date)}
+                </div>
+                {slots.length === 0 ? (
+                  <div className="oc9-ms-empty">ไม่มีกิจกรรม</div>
+                ) : (
+                  <div className="oc9-ms-slots">
+                    {slots.map((s, i) => (
+                      <div
+                        key={i}
+                        className={`oc9-ms-slot-row ${s.count > 0 ? 'planned' : ''}`}
+                        style={{ '--act-color': s.act?.color }}
+                        onClick={() => onCellClick(s.actId, date, s.slot, s.station, member.id)}
+                      >
+                        <span className="oc9-ms-slot-time">{formatSlotRange(s.slot)}</span>
+                        <span className="oc9-ms-slot-act">
+                          {s.act?.emoji} {s.act?.name}
+                        </span>
+                        <span className="oc9-ms-slot-count">
+                          {s.count > 0 ? `${s.count} ใบ` : '+ plan'}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }

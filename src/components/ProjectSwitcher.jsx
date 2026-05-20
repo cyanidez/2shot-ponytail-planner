@@ -4,6 +4,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 const DEFAULT_PROJECTS = [
   { label: '2Shot BNK48 Planner', path: '/', icon: 'B', color: '#FF6B9D' },
   { label: '2Shot Shock Me Girls', path: '/2shot_smg', icon: 'S', color: '#e91e63' },
+  { label: 'On Cloud 9 Festival', path: '/oncloud9', icon: '9', color: '#7c3aed' },
 ];
 
 export const OC9_PROJECT = { label: 'On Cloud 9 Festival', path: '/oncloud9', icon: '9', color: '#7c3aed' };
