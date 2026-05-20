@@ -1,0 +1,198 @@
+{
+  "eventName": "On Cloud 9 Festival",
+  "eventSubtitle": "BNK48 × CGM48 9th Anniversary",
+  "ticketPrice": 250,
+  "cdnBase": "https://cdn.jsdelivr.net/gh/withmywish/48th-members-cdn@3/optimized/",
+  "eventDates": ["2026-05-30", "2026-05-31", "2026-06-01"],
+  "timeSlots": {
+    "2026-05-30": ["14:30", "15:30", "16:30", "17:30", "18:30", "19:30"],
+    "2026-05-31": ["10:30", "11:30", "12:30", "13:30", "14:30", "15:30", "16:30", "17:30", "18:30", "19:30"],
+    "2026-06-01": ["10:30", "11:30", "12:30", "13:30", "14:30", "15:30", "16:30", "17:30", "18:30", "19:30"]
+  },
+  "members": [
+    {"id":"b3_fame",        "name":"Fame",        "color":"#FF1744","group":"BNK48","generation":3},
+    {"id":"b3_hoop",        "name":"Hoop",        "color":"#FF6D00","group":"BNK48","generation":3},
+    {"id":"b3_monet",       "name":"Monet",       "color":"#FF8FB1","group":"BNK48","generation":3},
+    {"id":"b3_pancake",     "name":"Pancake",     "color":"#FFD600","group":"BNK48","generation":3},
+    {"id":"b3_yoghurt",     "name":"Yoghurt",     "color":"#76FF03","group":"BNK48","generation":3},
+    {"id":"b4_berry",       "name":"Berry",       "color":"#F50057","group":"BNK48","generation":4},
+    {"id":"b4_emmy",        "name":"Emmy",        "color":"#2196F3","group":"BNK48","generation":4},
+    {"id":"b4_janry",       "name":"Janry",       "color":"#FF9800","group":"BNK48","generation":4},
+    {"id":"b4_l",           "name":"L",           "color":"#D500F9","group":"BNK48","generation":4},
+    {"id":"b4_marine",      "name":"Marine",      "color":"#E91E63","group":"BNK48","generation":4},
+    {"id":"b4_micha",       "name":"Micha",       "color":"#A1887F","group":"BNK48","generation":4},
+    {"id":"b4_palmmy",      "name":"Palmmy",      "color":"#00E676","group":"BNK48","generation":4},
+    {"id":"b4_patt",        "name":"Patt",        "color":"#EC407A","group":"BNK48","generation":4},
+    {"id":"b4_sindy",       "name":"Sindy",       "color":"#26A69A","group":"BNK48","generation":4},
+    {"id":"b4_wawa",        "name":"Wawa",        "color":"#D4E157","group":"BNK48","generation":4},
+    {"id":"b5_arlee",       "name":"Arlee",       "color":"#FF6E40","group":"BNK48","generation":5},
+    {"id":"b5_galeya",      "name":"Galeya",      "color":"#FF5722","group":"BNK48","generation":5},
+    {"id":"b5_jew",         "name":"Jew",         "color":"#C6FF00","group":"BNK48","generation":5},
+    {"id":"b5_khaimook",    "name":"Khaimook",    "color":"#FFAB40","group":"BNK48","generation":5},
+    {"id":"b5_mayji",       "name":"Mayji",       "color":"#FF80AB","group":"BNK48","generation":5},
+    {"id":"b5_nall",        "name":"Nall",        "color":"#18FFFF","group":"BNK48","generation":5},
+    {"id":"b5_nammonn",     "name":"Nammonn",     "color":"#EA80FC","group":"BNK48","generation":5},
+    {"id":"b5_neen",        "name":"Neen",        "color":"#FFD180","group":"BNK48","generation":5},
+    {"id":"b5_niya",        "name":"Niya",        "color":"#AB47BC","group":"BNK48","generation":5},
+    {"id":"b5_proud",       "name":"Proud",       "color":"#F48FB1","group":"BNK48","generation":5},
+    {"id":"b5_saonoi",      "name":"Saonoi",      "color":"#B9F6CA","group":"BNK48","generation":5},
+    {"id":"b6_blythe",      "name":"Blythe",      "color":"#FFD93D","group":"BNK48","generation":6},
+    {"id":"b6_cartoon",     "name":"Cartoon",     "color":"#4CAF50","group":"BNK48","generation":6},
+    {"id":"b6_grape",       "name":"Grape",       "color":"#00BCD4","group":"BNK48","generation":6},
+    {"id":"b6_inkcha",      "name":"Inkcha",      "color":"#8BC34A","group":"BNK48","generation":6},
+    {"id":"b6_khowjow",     "name":"Khowjow",     "color":"#009688","group":"BNK48","generation":6},
+    {"id":"b6_luksorn",     "name":"Luksorn",     "color":"#00E5FF","group":"BNK48","generation":6},
+    {"id":"b6_mail",        "name":"Mail",        "color":"#F44336","group":"BNK48","generation":6},
+    {"id":"b6_mint",        "name":"Mint",        "color":"#78909C","group":"BNK48","generation":6},
+    {"id":"b6_mirin",       "name":"Mirin",       "color":"#FF6B9D","group":"BNK48","generation":6},
+    {"id":"b6_praew",       "name":"Praew",       "color":"#66BB6A","group":"BNK48","generation":6},
+    {"id":"b6_rose",        "name":"Rose",        "color":"#9575CD","group":"BNK48","generation":6},
+    {"id":"cgm2_emma",      "name":"Emma",        "color":"#FF4081","group":"CGM48","generation":2},
+    {"id":"cgm2_ginna",     "name":"Ginna",       "color":"#FFAB40","group":"CGM48","generation":2},
+    {"id":"cgm2_jingjing",  "name":"Jingjing",    "color":"#69F0AE","group":"CGM48","generation":2},
+    {"id":"cgm2_lookked",   "name":"Lookked",     "color":"#40C4FF","group":"CGM48","generation":2},
+    {"id":"cgm2_nana",      "name":"Nana",        "color":"#FF80AB","group":"CGM48","generation":2},
+    {"id":"cgm3_kwan",      "name":"Kwan",        "color":"#CE93D8","group":"CGM48","generation":3},
+    {"id":"cgm3_lingling",  "name":"Lingling",    "color":"#FF6E40","group":"CGM48","generation":3},
+    {"id":"cgm3_ploen",     "name":"Ploen",       "color":"#FF7043","group":"CGM48","generation":3},
+    {"id":"cgm3_prae",      "name":"Prae",        "color":"#A5D6A7","group":"CGM48","generation":3},
+    {"id":"cgm4_else",      "name":"Else",        "color":"#84FFFF","group":"CGM48","generation":4},
+    {"id":"cgm4_hongyok",   "name":"Hongyok",     "color":"#FF6B6B","group":"CGM48","generation":4},
+    {"id":"cgm4_nisha",     "name":"Nisha",       "color":"#CE93D8","group":"CGM48","generation":4},
+    {"id":"cgm4_praifa",    "name":"Praifa",      "color":"#81D4FA","group":"CGM48","generation":4},
+    {"id":"cgm4_satangpound","name":"Satangpound","color":"#FFFF8D","group":"CGM48","generation":4},
+    {"id":"cgm4_shenae",    "name":"Shenae",      "color":"#CCFF90","group":"CGM48","generation":4},
+    {"id":"cgm4_valentine", "name":"Valentine",   "color":"#FF80AB","group":"CGM48","generation":4},
+    {"id":"cgm5_chifa",     "name":"Chifa",       "color":"#F48FB1","group":"CGM48","generation":5},
+    {"id":"cgm5_lewlew",    "name":"Lewlew",      "color":"#80CBC4","group":"CGM48","generation":5},
+    {"id":"cgm5_namphet",   "name":"Namphet",     "color":"#FFCC80","group":"CGM48","generation":5},
+    {"id":"cgm5_punpon",    "name":"Punpon",      "color":"#C5CAE9","group":"CGM48","generation":5},
+    {"id":"cgm5_tara",      "name":"Tara",        "color":"#F8BBD0","group":"CGM48","generation":5}
+  ],
+  "activities": [
+    {
+      "id": "balance_bridge",
+      "name": "ข้ามไป ข้ามให้ได้",
+      "nameEn": "Balance Bridge",
+      "emoji": "🌉",
+      "description": "ข้ามสะพานใน 10 วินาที",
+      "ticketsRequired": 1,
+      "color": "#FF6B9D"
+    },
+    {
+      "id": "hachi_cha",
+      "name": "Cha Ba Cha",
+      "nameEn": "Hachi Cha Booth",
+      "emoji": "🧋",
+      "description": "คิวพบเมมเบอร์ + สั่งเครื่องดื่ม",
+      "ticketsRequired": 0,
+      "hachiChaPrice": 145,
+      "color": "#FF9800"
+    },
+    {
+      "id": "silly_face",
+      "name": "Woh Oh Oh",
+      "nameEn": "Silly Face Contest",
+      "emoji": "🤪",
+      "description": "แข่งทำหน้าตลกใน 5 วินาที",
+      "ticketsRequired": 1,
+      "color": "#FFD600"
+    },
+    {
+      "id": "heart_rate",
+      "name": "ใจมันสั่น",
+      "nameEn": "Heart Rate Challenge",
+      "emoji": "💓",
+      "description": "เซอร์ไพรส์เมมเบอร์ 15 วินาที",
+      "ticketsRequired": 1,
+      "color": "#F44336"
+    },
+    {
+      "id": "ball_toss",
+      "name": "Blue White Blue",
+      "nameEn": "Ball Toss Game",
+      "emoji": "🎯",
+      "description": "โยนบอลแบบ Tic-Tac-Toe",
+      "ticketsRequired": 1,
+      "color": "#2196F3"
+    },
+    {
+      "id": "tattoo",
+      "name": "Lip ของเธอ",
+      "nameEn": "Tattoo Sticker Booth",
+      "emoji": "💋",
+      "description": "ติดสติ๊กเกอร์รอยสัก",
+      "ticketsRequired": 1,
+      "color": "#9C27B0"
+    },
+    {
+      "id": "photo_booth",
+      "name": "SNS",
+      "nameEn": "Photo Booth",
+      "emoji": "📸",
+      "description": "ถ่ายรูปกับ Album Frame พิเศษ",
+      "ticketsRequired": 5,
+      "color": "#00BCD4"
+    },
+    {
+      "id": "mini_golf",
+      "name": "บนเนินเขา",
+      "nameEn": "Mini Golf",
+      "emoji": "⛳",
+      "description": "ตีกอล์ฟมินิครั้งเดียว",
+      "ticketsRequired": 1,
+      "color": "#4CAF50"
+    },
+    {
+      "id": "pin_tail",
+      "name": "Ponytail",
+      "nameEn": "Pin-the-Tail Game",
+      "emoji": "🐴",
+      "description": "ปิดตาปักหางม้า",
+      "ticketsRequired": 1,
+      "color": "#FF5722"
+    }
+  ],
+  "fanmeet": [
+    {
+      "date": "2026-05-30",
+      "time": "17:30 - 19:30",
+      "label": "CGM48 2nd Gen + 5th Gen",
+      "group": "CGM48",
+      "generations": [2, 5],
+      "note": "ใช้ Fanmeet Ticket จาก iAM48"
+    },
+    {
+      "date": "2026-05-31",
+      "time": "12:30 - 14:30",
+      "label": "BNK48 4th Gen",
+      "group": "BNK48",
+      "generations": [4],
+      "note": "ใช้ Fanmeet Ticket จาก iAM48"
+    },
+    {
+      "date": "2026-05-31",
+      "time": "17:30 - 19:30",
+      "label": "BNK48 5th Gen",
+      "group": "BNK48",
+      "generations": [5],
+      "note": "ใช้ Fanmeet Ticket จาก iAM48"
+    },
+    {
+      "date": "2026-06-01",
+      "time": "12:30 - 14:30",
+      "label": "BNK48 6th Gen",
+      "group": "BNK48",
+      "generations": [6],
+      "note": "ใช้ Fanmeet Ticket จาก iAM48"
+    },
+    {
+      "date": "2026-06-01",
+      "time": "17:30 - 19:30",
+      "label": "CGM48 3rd Gen + 4th Gen",
+      "group": "CGM48",
+      "generations": [3, 4],
+      "note": "ใช้ Fanmeet Ticket จาก iAM48"
+    }
+  ]
+}

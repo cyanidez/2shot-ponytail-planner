@@ -4,6 +4,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 const PROJECTS = [
   { label: '2Shot BNK48 Planner', path: '/', icon: 'B', color: '#FF6B9D' },
   { label: '2Shot Shock Me Girls', path: '/2shot_smg', icon: 'S', color: '#e91e63' },
+  { label: 'On Cloud 9 Festival', path: '/oncloud9', icon: '9', color: '#7c3aed' },
 ];
 
 export default function ProjectSwitcher() {
@@ -12,7 +13,9 @@ export default function ProjectSwitcher() {
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
 
-  const currentPath = pathname.startsWith('/2shot_smg') ? '/2shot_smg' : '/';
+  const currentPath = pathname.startsWith('/oncloud9')
+    ? '/oncloud9'
+    : pathname.startsWith('/2shot_smg') ? '/2shot_smg' : '/';
   const current = PROJECTS.find(p => p.path === currentPath);
 
   useEffect(() => {
