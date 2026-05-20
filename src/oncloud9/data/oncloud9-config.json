@@ -194,5 +194,313 @@
       "generations": [3, 4],
       "note": "ใช้ Fanmeet Ticket จาก iAM48"
     }
-  ]
+  ],
+  "scheduleData": {
+    "balance_bridge": {
+      "2026-05-30": {
+        "14:30": ["b4_emmy",   "b4_sindy",        "cgm2_emma"],
+        "15:30": ["b4_palmmy", "cgm5_punpon",      "cgm3_lingling"],
+        "16:30": ["b3_monet",  "cgm4_nisha",       "b6_mirin"],
+        "17:30": ["b4_l",      "cgm4_satangpound", "b4_berry"],
+        "18:30": ["b4_marine", "b3_fame",           "cgm3_ploen"],
+        "19:30": ["b3_pancake","cgm3_prae",         "cgm4_valentine"]
+      },
+      "2026-05-31": {
+        "10:30": ["b3_fame",    "b5_saonoi",       "b6_rose"],
+        "11:30": ["b5_jew",     "b5_neen",         "cgm4_else"],
+        "12:30": ["b5_arlee",   "b5_galeya",       "cgm5_lewlew"],
+        "13:30": ["b5_nammonn", "b5_khaimook",     "cgm5_tara"],
+        "14:30": ["b3_yoghurt", "b5_mayji",        "b5_niya"],
+        "15:30": ["b4_berry",   "cgm5_chifa",      "cgm4_satangpound"],
+        "16:30": ["b4_micha",   "cgm4_shenae",     "cgm5_namphet"],
+        "17:30": ["b4_janry",   "b4_wawa",         "b3_hoop"],
+        "18:30": ["b6_luksorn", "cgm2_ginna",      "cgm3_lingling"],
+        "19:30": ["b6_praew",   "b6_mint",         "b6_mirin"]
+      },
+      "2026-06-01": {
+        "10:30": ["b4_patt",     "cgm2_lookked",   "b4_marine"],
+        "11:30": ["b5_nall",     "b5_mayji",       "cgm4_praifa"],
+        "12:30": ["b5_niya",     "b5_proud",       "cgm2_jingjing"],
+        "13:30": ["cgm4_hongyok","b3_monet",       "b3_yoghurt"],
+        "14:30": ["b3_hoop",     "cgm3_kwan",      "cgm3_lingling"],
+        "15:30": ["b4_emmy",     "b4_sindy",       "b6_praew"],
+        "16:30": ["b6_blythe",   "b6_cartoon",     "b6_inkcha"],
+        "17:30": ["b6_grape",    "b6_mail",        "cgm2_nana"],
+        "18:30": ["b6_khowjow",  "b6_inkcha",      "cgm2_ginna"],
+        "19:30": ["b3_pancake",  "b5_arlee",       "b5_galeya"]
+      }
+    },
+    "hachi_cha": {
+      "2026-05-30": {
+        "14:30": ["b5_niya",    "cgm2_ginna",      "cgm4_nisha"],
+        "15:30": ["b4_emmy",    "b4_sindy",        "b4_wawa"],
+        "16:30": ["b5_jew",     "b5_neen",         "b5_proud"],
+        "17:30": ["b3_pancake", "cgm3_lingling",   "cgm3_prae"],
+        "18:30": ["b3_monet",   "cgm4_hongyok",    "b6_mint"],
+        "19:30": ["b4_l",       "b6_khowjow",      "b6_inkcha"]
+      },
+      "2026-05-31": {
+        "10:30": ["cgm2_emma",  "cgm5_lewlew",     "cgm5_punpon"],
+        "11:30": ["b3_fame",    "b5_saonoi",       "b6_rose"],
+        "12:30": ["cgm5_chifa", "cgm3_ploen",      "cgm4_valentine"],
+        "13:30": ["b3_yoghurt", "cgm4_else",       "cgm4_satangpound"],
+        "14:30": ["b5_nammonn", "b5_khaimook",     "cgm5_namphet"],
+        "15:30": ["b4_janry",   "cgm3_prae",       "cgm5_tara"],
+        "16:30": ["b4_berry",   "b4_marine",       "cgm4_hongyok"],
+        "17:30": ["b4_palmmy",  "b6_khowjow",      "b6_inkcha"],
+        "18:30": ["b4_micha",   "cgm4_shenae",     "cgm4_praifa"],
+        "19:30": ["b6_blythe",  "b6_cartoon",      "b3_monet"]
+      },
+      "2026-06-01": {
+        "10:30": ["b4_janry",       "b4_wawa",         "b5_khaimook"],
+        "11:30": ["b4_patt",        "cgm3_kwan",       "cgm2_nana"],
+        "12:30": ["b5_arlee",       "b5_galeya",       "cgm2_lookked"],
+        "13:30": ["b5_nall",        "b5_mayji",        "cgm4_praifa"],
+        "14:30": ["cgm2_jingjing",  "cgm4_satangpound","b4_l"],
+        "15:30": ["b3_hoop",        "b5_saonoi",       "b5_proud"],
+        "16:30": ["b6_luksorn",     "b4_berry",        "b6_grape"],
+        "17:30": ["b6_praew",       "b6_mint",         "b6_mirin"],
+        "18:30": ["b6_blythe",      "b6_cartoon",      "cgm5_lewlew"],
+        "19:30": ["b6_grape",       "b6_mail",         "b5_jew"]
+      }
+    },
+    "silly_face": {
+      "2026-05-30": {
+        "14:30": ["b4_l",       "b6_mint",         "cgm2_jingjing"],
+        "15:30": ["cgm5_tara",  "cgm3_prae",       "cgm4_praifa"],
+        "16:30": ["cgm4_shenae","cgm4_satangpound","b3_hoop"],
+        "17:30": ["b4_emmy",    "b4_sindy",        "b6_khowjow"],
+        "18:30": ["b6_grape",   "b6_mail",         "b6_mirin"],
+        "19:30": ["b4_micha",   "b4_patt",         "b5_niya"]
+      },
+      "2026-05-31": {
+        "10:30": ["cgm2_ginna",  "cgm3_lingling",  "cgm4_hongyok"],
+        "11:30": ["b3_monet",    "b6_praew",       "cgm4_nisha"],
+        "12:30": ["b3_pancake",  "cgm2_emma",      "cgm5_namphet"],
+        "13:30": ["b5_arlee",    "b5_galeya",      "b6_luksorn"],
+        "14:30": ["b5_saonoi",   "b6_rose",        "cgm3_ploen"],
+        "15:30": ["b3_fame",     "cgm5_lewlew",    "cgm4_else"],
+        "16:30": ["b4_palmmy",   "b6_khowjow",     "b6_inkcha"],
+        "17:30": ["b3_yoghurt",  "cgm5_punpon",    "cgm2_jingjing"],
+        "18:30": ["b4_berry",    "cgm3_kwan",      "b4_marine"],
+        "19:30": ["b4_janry",    "b4_wawa",        "cgm4_praifa"]
+      },
+      "2026-06-01": {
+        "10:30": ["cgm5_chifa",    "cgm2_jingjing", "b5_nall"],
+        "11:30": ["cgm4_valentine","b4_janry",      "b4_micha"],
+        "12:30": ["b4_marine",     "b3_fame",       "b4_palmmy"],
+        "13:30": ["b5_jew",        "b5_neen",       "b5_proud"],
+        "14:30": ["b5_nammonn",    "b5_khaimook",   "cgm2_lookked"],
+        "15:30": ["b5_nall",       "b5_mayji",      "cgm2_nana"],
+        "16:30": ["b4_emmy",       "b4_sindy",      "b4_patt"],
+        "17:30": ["b3_fame",       "cgm5_namphet",  "b3_pancake"],
+        "18:30": ["b3_hoop",       "b5_saonoi",     "cgm2_emma"],
+        "19:30": ["b6_blythe",     "b6_cartoon",    "b6_luksorn"]
+      }
+    },
+    "heart_rate": {
+      "2026-05-30": {
+        "14:30": ["b4_marine",  "b6_mirin",        "cgm5_chifa"],
+        "15:30": ["b6_cartoon", "b6_grape",        "b6_mail"],
+        "16:30": ["b5_nammonn", "b5_khaimook",     "b5_arlee"],
+        "17:30": ["b4_wawa",    "b6_praew",        "b6_mint"],
+        "18:30": ["b4_emmy",    "b4_sindy",        "cgm4_nisha"],
+        "19:30": ["b4_palmmy",  "b6_luksorn",      "cgm3_kwan"]
+      },
+      "2026-05-31": {
+        "10:30": ["b5_neen",       "b5_niya",       "cgm2_lookked"],
+        "11:30": ["b6_mint",       "b6_mirin",      "b4_wawa"],
+        "12:30": ["b6_blythe",     "b6_cartoon",    "b6_grape"],
+        "13:30": ["b5_nall",       "b5_mayji",      "b5_proud"],
+        "14:30": ["b5_arlee",      "b5_galeya",     "b5_jew"],
+        "15:30": ["cgm2_jingjing", "cgm2_nana",     "cgm4_praifa"],
+        "16:30": ["cgm3_ploen",    "b6_praew",      "cgm4_else"],
+        "17:30": ["cgm4_hongyok",  "cgm4_valentine","cgm5_namphet"],
+        "18:30": ["b4_l",          "b4_patt",       "cgm3_prae"],
+        "19:30": ["b3_hoop",       "cgm2_emma",     "cgm5_punpon"]
+      },
+      "2026-06-01": {
+        "10:30": ["cgm4_else",       "cgm4_shenae",   "cgm2_nana"],
+        "11:30": ["b3_fame",         "b5_saonoi",     "cgm5_tara"],
+        "12:30": ["cgm4_satangpound","cgm2_emma",     "b5_nammonn"],
+        "13:30": ["cgm3_lingling",   "cgm5_punpon",   "cgm3_kwan"],
+        "14:30": ["b3_monet",        "cgm5_lewlew",   "b4_emmy"],
+        "15:30": ["b4_micha",        "b6_khowjow",    "b6_inkcha"],
+        "16:30": ["b3_pancake",      "cgm2_ginna",    "cgm5_namphet"],
+        "17:30": ["b4_berry",        "b6_rose",       "b5_niya"],
+        "18:30": ["b4_janry",        "cgm5_chifa",    "cgm2_lookked"],
+        "19:30": ["b3_yoghurt",      "b5_khaimook",   "b4_wawa"]
+      }
+    },
+    "photo_booth": {
+      "2026-05-30": {
+        "14:30": ["b6_grape",  "b6_mail",         "cgm2_lookked"],
+        "15:30": ["b4_micha",  "b4_patt",         "cgm3_ploen"],
+        "16:30": ["b3_fame",   "b5_saonoi",       "b6_rose"],
+        "17:30": ["b3_yoghurt","cgm4_else",       "cgm4_hongyok"],
+        "18:30": ["b3_hoop",   "b4_wawa",         "cgm4_valentine"],
+        "19:30": ["b5_nall",   "b5_mayji",        "b6_praew"]
+      },
+      "2026-05-31": {
+        "10:30": ["cgm5_tara",   "cgm3_prae",     "cgm4_praifa"],
+        "11:30": ["cgm4_shenae", "cgm3_ploen",    "cgm4_hongyok"],
+        "12:30": ["b3_monet",    "cgm2_ginna",    "b6_praew"],
+        "13:30": ["b6_khowjow",  "b6_inkcha",     "b6_mirin"],
+        "14:30": ["b5_proud",    "cgm5_punpon",   "b5_nall"],
+        "15:30": ["b6_blythe",   "b6_cartoon",    "b6_mint"],
+        "16:30": ["cgm3_kwan",   "cgm2_emma",     "b6_rose"],
+        "17:30": ["b3_pancake",  "b6_mail",       "cgm2_nana"],
+        "18:30": ["b4_janry",    "cgm2_jingjing", "cgm4_satangpound"],
+        "19:30": ["b4_l",        "cgm5_lewlew",   "b4_marine"]
+      },
+      "2026-06-01": {
+        "10:30": ["cgm4_satangpound","cgm5_namphet","cgm5_punpon"],
+        "11:30": ["b4_emmy",        "b4_sindy",    "cgm4_nisha"],
+        "12:30": ["b4_berry",       "cgm3_lingling","cgm4_shenae"],
+        "13:30": ["b5_arlee",       "b5_galeya",   "b5_saonoi"],
+        "14:30": ["b4_marine",      "cgm5_chifa",  "cgm3_prae"],
+        "15:30": ["b4_palmmy",      "b4_l",        "b6_mint"],
+        "16:30": ["b5_jew",         "b5_neen",     "b5_niya"],
+        "17:30": ["b5_nammonn",     "b5_khaimook", "b5_mayji"],
+        "18:30": ["b6_luksorn",     "b5_proud",    "cgm5_tara"],
+        "19:30": ["b3_hoop",        "cgm2_nana",   "cgm5_namphet"]
+      }
+    },
+    "mini_golf": {
+      "2026-05-30": {
+        "14:30": ["b5_neen",       "b5_proud",        "cgm5_namphet"],
+        "15:30": ["cgm4_hongyok",  "cgm3_kwan",       "cgm4_satangpound"],
+        "16:30": ["b5_nall",       "b5_mayji",        "b6_luksorn"],
+        "17:30": ["b6_blythe",     "b6_cartoon",      "b6_grape"],
+        "18:30": ["b4_berry",      "b5_saonoi",       "b6_rose"],
+        "19:30": ["b5_arlee",      "b5_galeya",       "b5_khaimook"]
+      },
+      "2026-05-31": {
+        "10:30": ["cgm4_shenae",  "cgm4_valentine",  "b5_proud"],
+        "11:30": ["b5_nammonn",   "b5_khaimook",     "b6_cartoon"],
+        "12:30": ["b6_khowjow",   "b6_inkcha",       "cgm2_nana"],
+        "13:30": ["b5_niya",      "b6_cartoon",      "b5_saonoi"],
+        "14:30": ["b6_praew",     "b6_mint",         "b6_mirin"],
+        "15:30": ["b3_hoop",      "b4_micha",        "b4_palmmy"],
+        "16:30": ["b4_wawa",      "b6_mail",         "cgm4_praifa"],
+        "17:30": ["b6_luksorn",   "cgm5_chifa",      "cgm3_lingling"],
+        "18:30": ["cgm2_lookked", "cgm5_lewlew",     "cgm4_nisha"],
+        "19:30": ["b3_yoghurt",   "b6_rose",         "cgm3_kwan"]
+      },
+      "2026-06-01": {
+        "10:30": ["b5_nammonn",   "cgm4_valentine",  "b5_niya"],
+        "11:30": ["b5_jew",       "cgm3_prae",       "b5_neen"],
+        "12:30": ["b3_pancake",   "cgm3_ploen",      "cgm4_else"],
+        "13:30": ["b4_l",         "b4_palmmy",       "cgm4_nisha"],
+        "14:30": ["b4_micha",     "b4_patt",         "cgm2_ginna"],
+        "15:30": ["b3_fame",      "b3_yoghurt",      "b6_mirin"],
+        "16:30": ["b3_monet",     "cgm2_emma",       "cgm5_punpon"],
+        "17:30": ["b4_janry",     "b4_wawa",         "cgm5_tara"],
+        "18:30": ["b4_marine",    "cgm2_jingjing",   "b5_mayji"],
+        "19:30": ["b4_emmy",      "b4_sindy",        "b4_berry"]
+      }
+    },
+    "pin_tail": {
+      "2026-05-30": {
+        "14:30": ["b3_pancake",  "b6_khowjow",      "cgm2_nana"],
+        "15:30": ["b3_yoghurt",  "b5_galeya",       "b5_jew"],
+        "16:30": ["b4_marine",   "b6_blythe",       "b6_praew"],
+        "17:30": ["b4_micha",    "b4_patt",         "b5_niya"],
+        "18:30": ["b4_janry",    "b5_arlee",        "b6_luksorn"],
+        "19:30": ["b3_hoop",     "b5_nammonn",      "cgm4_praifa"]
+      },
+      "2026-05-31": {
+        "10:30": ["b6_grape",        "b6_mail",       "b6_inkcha"],
+        "11:30": ["b5_nall",         "b5_mayji",      "b5_proud"],
+        "12:30": ["cgm2_jingjing",   "cgm2_lookked",  "cgm4_shenae"],
+        "13:30": ["cgm3_lingling",   "cgm4_hongyok",  "cgm3_kwan"],
+        "14:30": ["b3_monet",        "cgm2_ginna",    "b4_sindy"],
+        "15:30": ["b4_l",            "b4_wawa",       "cgm4_nisha"],
+        "16:30": ["b3_fame",         "cgm5_punpon",   "b6_blythe"],
+        "17:30": ["cgm4_satangpound","cgm2_emma",     "cgm3_prae"],
+        "18:30": ["cgm3_ploen",      "cgm4_else",     "cgm5_tara"],
+        "19:30": ["b3_pancake",      "cgm5_chifa",    "cgm2_ginna"]
+      },
+      "2026-06-01": {
+        "10:30": ["b5_saonoi",    "cgm2_emma",       "cgm4_nisha"],
+        "11:30": ["cgm2_ginna",   "cgm5_punpon",     "cgm4_satangpound"],
+        "12:30": ["b4_emmy",      "b4_sindy",        "cgm5_lewlew"],
+        "13:30": ["b4_berry",     "cgm4_valentine",  "cgm5_tara"],
+        "14:30": ["cgm5_namphet", "b4_wawa",         "cgm3_ploen"],
+        "15:30": ["cgm5_chifa",   "cgm2_lookked",    "b5_arlee"],
+        "16:30": ["b6_rose",      "b6_mint",         "b6_mirin"],
+        "17:30": ["b4_palmmy",    "b4_l",            "b5_neen"],
+        "18:30": ["b5_neen",      "b5_galeya",       "b5_jew"],
+        "19:30": ["b5_nammonn",   "b3_monet",        "cgm2_jingjing"]
+      }
+    },
+    "tattoo": {
+      "2026-05-30": {
+        "14:30": ["b6_blythe",   "b6_cartoon",      "cgm5_lewlew"],
+        "15:30": ["b5_nammonn",  "b5_khaimook",     "cgm4_else"],
+        "16:30": ["b4_berry",    "b6_khowjow",      "b6_inkcha"],
+        "17:30": ["b5_nall",     "b5_mayji",        "cgm3_kwan"],
+        "18:30": ["b5_jew",      "b5_neen",         "b5_proud"],
+        "19:30": ["b4_janry",    "cgm4_satangpound","cgm4_shenae"]
+      },
+      "2026-05-31": {
+        "10:30": ["cgm5_chifa",   "cgm2_nana",      "cgm5_namphet"],
+        "11:30": ["b5_niya",      "cgm3_prae",      "b6_blythe"],
+        "12:30": ["b6_mail",      "b6_luksorn",     "cgm4_praifa"],
+        "13:30": ["b5_neen",      "cgm4_shenae",    "b6_grape"],
+        "14:30": ["b3_hoop",      "cgm4_hongyok",   "cgm3_kwan"],
+        "15:30": ["cgm3_lingling","cgm2_lookked",   "b5_saonoi"],
+        "16:30": ["b4_patt",      "cgm4_valentine", "cgm4_nisha"],
+        "17:30": ["cgm3_ploen",   "b6_rose",        "b3_fame"],
+        "18:30": ["b6_praew",     "b6_mint",        "b6_mirin"],
+        "19:30": ["b4_palmmy",    "b6_khowjow",     "cgm4_else"]
+      },
+      "2026-06-01": {
+        "10:30": ["b4_l",       "cgm3_ploen",      "b5_neen"],
+        "11:30": ["b5_arlee",   "b5_galeya",       "b5_khaimook"],
+        "12:30": ["cgm2_ginna", "b3_hoop",         "b5_jew"],
+        "13:30": ["b3_pancake", "cgm3_prae",       "cgm4_else"],
+        "14:30": ["b3_fame",    "b5_saonoi",       "cgm2_emma"],
+        "15:30": ["b3_monet",   "cgm5_punpon",     "cgm5_tara"],
+        "16:30": ["b3_yoghurt", "cgm2_jingjing",   "b6_mail"],
+        "17:30": ["b4_marine",  "b4_patt",         "cgm5_chifa"],
+        "18:30": ["b4_emmy",    "b4_sindy",        "b4_wawa"],
+        "19:30": ["b4_micha",   "b6_rose",         "b4_palmmy"]
+      }
+    },
+    "ball_toss": {
+      "2026-05-30": {
+        "14:30": ["b5_arlee",   "b5_galeya",       "b6_luksorn"],
+        "15:30": ["b3_fame",    "b5_saonoi",       "b6_rose"],
+        "16:30": ["b4_janry",   "cgm4_valentine",  "cgm3_ploen"],
+        "17:30": ["b3_monet",   "cgm4_praifa",     "b6_inkcha"],
+        "18:30": ["b4_palmmy",  "cgm4_shenae",     "cgm4_satangpound"],
+        "19:30": ["b3_yoghurt", "cgm3_lingling",   "cgm4_else"]
+      },
+      "2026-05-31": {
+        "10:30": ["b5_nall",       "b5_mayji",      "cgm2_jingjing"],
+        "11:30": ["cgm3_kwan",     "cgm4_satangpound","cgm3_lingling"],
+        "12:30": ["b5_jew",        "b5_neen",       "cgm5_punpon"],
+        "13:30": ["b3_pancake",    "cgm4_nisha",    "cgm3_prae"],
+        "14:30": ["cgm2_emma",     "cgm4_valentine","b6_mail"],
+        "15:30": ["b4_marine",     "cgm2_ginna",    "b6_luksorn"],
+        "16:30": ["b4_l",          "cgm5_lewlew",   "cgm2_lookked"],
+        "17:30": ["b6_blythe",     "b6_cartoon",    "cgm5_tara"],
+        "18:30": ["b3_hoop",       "b3_monet",      "cgm2_nana"],
+        "19:30": ["b4_berry",      "b4_micha",      "b4_patt"]
+      },
+      "2026-06-01": {
+        "10:30": ["b4_emmy",     "b4_sindy",        "b4_micha"],
+        "11:30": ["cgm4_hongyok","cgm5_lewlew",     "cgm4_else"],
+        "12:30": ["cgm5_chifa",  "cgm5_namphet",    "b3_yoghurt"],
+        "13:30": ["b4_wawa",     "cgm2_nana",       "b4_patt"],
+        "14:30": ["b5_niya",     "b4_janry",        "cgm4_nisha"],
+        "15:30": ["b6_grape",    "b6_mail",         "b5_galeya"],
+        "16:30": ["b5_nammonn",  "b5_khaimook",     "b5_proud"],
+        "17:30": ["cgm2_lookked","cgm5_lewlew",     "b5_nall"],
+        "18:30": ["b6_praew",    "b6_mint",         "b6_mirin"],
+        "19:30": ["b6_khowjow",  "b6_inkcha",       "cgm5_tara"]
+      }
+    }
+  }
 }

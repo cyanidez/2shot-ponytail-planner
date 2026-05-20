@@ -1,6 +1,7 @@
 import config from './oncloud9-config.json';
 
 export const members = config.members;
+export const scheduleData = config.scheduleData || {};
 export const activities = config.activities;
 export const fanmeet = config.fanmeet;
 export const eventDates = config.eventDates;
@@ -37,13 +38,12 @@ export const getMemberGroups = () => {
   return groups;
 };
 
-// Generate rotating schedule: activity members rotate across stations per time slot
-// Distribution: members are assigned to activities round-robin, then rotate stations
+// Generate schedule: use explicit scheduleData from config when available, else auto-generate
 const generateSchedule = () => {
   const activityIds = activities.map(a => a.id);
   const memberIds = members.map(m => m.id);
 
-  // Distribute members round-robin across activities
+  // Distribute members round-robin across activities (fallback)
   const activityMembers = {};
   activityIds.forEach(id => { activityMembers[id] = []; });
   memberIds.forEach((id, idx) => {
@@ -58,9 +58,18 @@ const generateSchedule = () => {
 
     activityIds.forEach(actId => {
       schedule[date][actId] = {};
+
+      // Use explicit schedule if available
+      if (scheduleData[actId]?.[date]) {
+        slots.forEach(slot => {
+          schedule[date][actId][slot] = scheduleData[actId][date][slot] || [];
+        });
+        return;
+      }
+
+      // Fallback: auto-generate round-robin
       const pool = activityMembers[actId];
       const n = pool.length;
-
       slots.forEach((slot, slotIdx) => {
         schedule[date][actId][slot] = [
           pool[slotIdx % n],
