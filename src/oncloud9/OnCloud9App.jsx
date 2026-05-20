@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import ProjectSwitcher from '../components/ProjectSwitcher';
+import ProjectSwitcher, { OC9_PROJECT } from '../components/ProjectSwitcher';
 import {
   members, activities, fanmeet, eventDates, timeSlots, ticketPrice,
   getMemberById, getMemberImageUrl, getActivityById, getMemberGroups,
@@ -111,7 +111,11 @@ function OnCloud9App() {
             </div>
           </div>
           <div className="oc9-header-right">
-            <ProjectSwitcher />
+            <ProjectSwitcher projects={[
+              { label: '2Shot BNK48 Planner', path: '/', icon: 'B', color: '#FF6B9D' },
+              { label: '2Shot Shock Me Girls', path: '/2shot_smg', icon: 'S', color: '#e91e63' },
+              OC9_PROJECT,
+            ]} />
             <button className="oc9-clear-btn" onClick={() => setShowClearConfirm(true)}>🗑 Clear All</button>
           </div>
         </div>

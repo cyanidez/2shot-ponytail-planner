@@ -1,13 +1,14 @@
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
-const PROJECTS = [
+const DEFAULT_PROJECTS = [
   { label: '2Shot BNK48 Planner', path: '/', icon: 'B', color: '#FF6B9D' },
   { label: '2Shot Shock Me Girls', path: '/2shot_smg', icon: 'S', color: '#e91e63' },
-  { label: 'On Cloud 9 Festival', path: '/oncloud9', icon: '9', color: '#7c3aed' },
 ];
 
-export default function ProjectSwitcher() {
+export const OC9_PROJECT = { label: 'On Cloud 9 Festival', path: '/oncloud9', icon: '9', color: '#7c3aed' };
+
+export default function ProjectSwitcher({ projects = DEFAULT_PROJECTS }) {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const [open, setOpen] = useState(false);
@@ -16,7 +17,7 @@ export default function ProjectSwitcher() {
   const currentPath = pathname.startsWith('/oncloud9')
     ? '/oncloud9'
     : pathname.startsWith('/2shot_smg') ? '/2shot_smg' : '/';
-  const current = PROJECTS.find(p => p.path === currentPath);
+  const current = projects.find(p => p.path === currentPath);
 
   useEffect(() => {
     const handler = (e) => {
@@ -30,6 +31,8 @@ export default function ProjectSwitcher() {
     setOpen(false);
     if (path !== currentPath) navigate(path);
   };
+
+  if (!current) return null;
 
   return (
     <div className="ps-wrapper" ref={ref}>
@@ -50,7 +53,7 @@ export default function ProjectSwitcher() {
 
       {open && (
         <ul className="ps-menu" role="listbox">
-          {PROJECTS.map(p => {
+          {projects.map(p => {
             const active = p.path === currentPath;
             return (
               <li
