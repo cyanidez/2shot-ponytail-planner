@@ -368,6 +368,7 @@ function PlannerView({ visibleMemberIds, filterMemberIds, planSelections, onOpen
             planSelections={planSelections}
             visibleMemberIds={visibleMemberIds}
             onCellClick={onCellClick}
+            fanmeetPlan={fanmeetPlan}
           />
         </>
       )}
@@ -409,8 +410,19 @@ function PlannerView({ visibleMemberIds, filterMemberIds, planSelections, onOpen
 
 // ─── Timeline View ────────────────────────────────────────────────────────────
 
-function TimelineView({ date, planSelections, visibleMemberIds, onCellClick }) {
+function TimelineView({ date, planSelections, visibleMemberIds, onCellClick, fanmeetPlan }) {
   const slots = timeSlots[date] || [];
+
+  const getFanmeetConflict = (slot) => {
+    const slotStart = slotToMinutes(slot);
+    return getFanmeetByDate(date).find(fm => {
+      if (!fanmeetPlan?.[`${fm.date}|${fm.time}`]) return false;
+      const [startStr, endStr] = fm.time.split(' - ');
+      const start = slotToMinutes(startStr.trim());
+      const end = slotToMinutes(endStr.trim());
+      return slotStart >= start && slotStart < end;
+    }) || null;
+  };
 
   return (
     <div className="oc9-timeline">
@@ -428,9 +440,14 @@ function TimelineView({ date, planSelections, visibleMemberIds, onCellClick }) {
             </tr>
           </thead>
           <tbody>
-            {slots.map(slot => (
-              <tr key={slot}>
-                <td className="oc9-tl-td-time">{slot}</td>
+            {slots.map(slot => {
+              const conflict = getFanmeetConflict(slot);
+              return (
+              <tr key={slot} className={conflict ? 'oc9-slot-row--fanmeet' : ''}>
+                <td className="oc9-tl-td-time">
+                  {slot}
+                  {conflict && <div className="oc9-tl-fanmeet-label">⭐ {conflict.label}</div>}
+                </td>
                 {activities.map(act => {
                   const memberIds = schedule[date]?.[act.id]?.[slot] || [];
                   return (
@@ -459,7 +476,8 @@ function TimelineView({ date, planSelections, visibleMemberIds, onCellClick }) {
                   );
                 })}
               </tr>
-            ))}
+              );
+            })}
           </tbody>
         </table>
       </div>

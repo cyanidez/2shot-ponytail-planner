@@ -1233,3 +1233,11 @@
 .oc9-tl-member.dimmed { opacity: 0.3; }
 .oc9-tl-member.empty { color: #4a4a6a; cursor: default; }
 .oc9-tl-check { font-size: 9px; opacity: 0.9; }
+.oc9-tl-fanmeet-label {
+  font-size: 9px;
+  font-weight: 600;
+  color: #fbbf24;
+  white-space: nowrap;
+  margin-top: 2px;
+  line-height: 1.2;
+}
