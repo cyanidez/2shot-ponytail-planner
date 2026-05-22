@@ -1038,38 +1038,141 @@ function MemberScheduleCard({ member, dimmed, planSelections, onCellClick }) {
 // ─── Summary View ─────────────────────────────────────────────────────────────
 
 function SummaryView({ planSelections, fanmeetPlan, totalTickets, totalCost }) {
-  const captureRef = useRef(null);
   const [downloading, setDownloading] = useState(false);
 
-  const handleDownload = useCallback(async () => {
-    if (!captureRef.current) return;
+  const handleDownload = useCallback(() => {
     setDownloading(true);
     try {
-      const { toPng } = await import('html-to-image');
-      const dataUrl = await toPng(captureRef.current, {
-        backgroundColor: '#0d0d12',
-        pixelRatio: 2,
+      // ─ build data ─
+      const byDate = {};
+      eventDates.forEach(d => { byDate[d] = {}; });
+      Object.entries(planSelections).forEach(([k, count]) => {
+        const [actId, date, slot, station] = k.split('|');
+        if (!byDate[date]) return;
+        if (!byDate[date][slot]) byDate[date][slot] = {};
+        if (!byDate[date][slot][actId]) byDate[date][slot][actId] = [];
+        const mem = getMemberById((schedule[date]?.[actId]?.[slot] || [])[parseInt(station) - 1]);
+        const act = getActivityById(actId);
+        if (mem && act) byDate[date][slot][actId].push({ mem, count });
       });
-      // mobile Safari fallback: open in new tab so user can save
+
+      const byMember = {};
+      Object.entries(planSelections).forEach(([k, count]) => {
+        const [actId, date, slot, station] = k.split('|');
+        const mem = getMemberById((schedule[date]?.[actId]?.[slot] || [])[parseInt(station) - 1]);
+        if (!mem) return;
+        if (!byMember[mem.id]) byMember[mem.id] = { mem, total: 0 };
+        byMember[mem.id].total += count;
+      });
+
+      // ─ canvas setup ─
+      const DPR = 2;
+      const W = 390;
+      const PAD = 18;
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+
+      // ─ drawing helpers ─
+      const lines = []; // { type, text, color, size, bold, x, bg, h }
+      const push = (obj) => lines.push(obj);
+
+      const drawLines = (measureOnly) => {
+        let y = PAD;
+        for (const l of lines) {
+          if (l.bg && !measureOnly) {
+            ctx.fillStyle = l.bg;
+            ctx.fillRect(0, y - 4, W * DPR, (l.h || 28) * DPR);
+          }
+          if (!measureOnly && l.text) {
+            ctx.font = `${l.bold ? '700' : '400'} ${(l.size || 13) * DPR}px 'Segoe UI', sans-serif`;
+            ctx.fillStyle = l.color || '#f0f0ff';
+            ctx.fillText(l.text, (l.x !== undefined ? l.x : PAD) * DPR, (y + (l.size || 13)) * DPR);
+          }
+          y += l.h || (l.size || 13) + 8;
+        }
+        return y + PAD;
+      };
+
+      // ─ build line list ─
+      push({ text: 'On Cloud 9 Festival', size: 20, bold: true, color: '#fff', h: 30 });
+      push({ text: 'BNK48 × CGM48 9th Anniversary', size: 12, color: '#9898c0', h: 22 });
+      push({ text: '─────────────────────────', size: 10, color: '#ffffff18', h: 18 });
+      push({ text: `🎫 ${totalTickets} tickets  ·  ฿${totalCost.toLocaleString()}`, size: 14, bold: true, color: '#a78bfa', h: 26 });
+      push({ text: ' ', h: 8 });
+
+      eventDates.forEach(date => {
+        const slotMap = byDate[date];
+        const dayFanmeets = getFanmeetByDate(date).filter(fm => fanmeetPlan[`${fm.date}|${fm.time}`]);
+        const allSlots = timeSlots[date] || [];
+        const hasAnything = Object.keys(slotMap).length > 0 || dayFanmeets.length > 0;
+        if (!hasAnything) return;
+
+        const [y2, m2, d2] = date.split('-').map(Number);
+        const dow = new Date(y2, m2 - 1, d2).getDay();
+        const dateColor = dow === 6 ? '#a78bfa' : dow === 0 ? '#f87171' : '#fbbf24';
+        push({ text: `${getDayName(date)}  ${formatShortDate(date)}`, size: 14, bold: true, color: dateColor, bg: '#1a1a2e', h: 28, x: PAD });
+
+        const merged = [];
+        dayFanmeets.forEach(fm => {
+          const [s] = fm.time.split(' - ');
+          merged.push({ type: 'fanmeet', min: slotToMinutes(s.trim()), fm });
+        });
+        allSlots.forEach(slot => {
+          const actMap = slotMap[slot] || {};
+          if (Object.keys(actMap).length) merged.push({ type: 'slot', min: slotToMinutes(slot), slot, actMap });
+        });
+        merged.sort((a, b) => a.min - b.min);
+
+        merged.forEach(item => {
+          if (item.type === 'fanmeet') {
+            push({ text: `  ⭐ ${item.fm.time}  ${item.fm.label}`, size: 12, color: '#fbbf24', h: 22 });
+          } else {
+            push({ text: `  ${formatSlotRange(item.slot)}`, size: 11, color: '#9898c0', h: 20 });
+            Object.entries(item.actMap).forEach(([actId, items]) => {
+              const act = getActivityById(actId);
+              if (!act) return;
+              const members = items.map(i => `${i.mem.name}×${i.count}`).join('  ');
+              push({ text: `    ${act.emoji} ${act.name}  —  ${members}`, size: 12, color: '#d8d8f4', h: 20 });
+            });
+          }
+        });
+        push({ text: ' ', h: 6 });
+      });
+
+      push({ text: '─────────────────────────', size: 10, color: '#ffffff18', h: 18 });
+      push({ text: 'จำนวนบัตรต่อเมมเบอร์', size: 13, bold: true, color: '#fff', h: 24 });
+      Object.values(byMember)
+        .sort((a, b) => b.total - a.total)
+        .forEach(({ mem, total }) => {
+          push({ text: `  ${mem.name}`, size: 12, color: mem.color, bold: true, h: 20 });
+          push({ text: `    × ${total} รอบ`, size: 11, color: '#c0c0e0', h: 18 });
+        });
+
+      // ─ measure then draw ─
+      const totalH = drawLines(true);
+      canvas.width = W * DPR;
+      canvas.height = totalH * DPR;
+      ctx.fillStyle = '#0d0d12';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      drawLines(false);
+
+      const dataUrl = canvas.toDataURL('image/png');
       const newTab = window.open();
       if (newTab) {
-        newTab.document.write(`<img src="${dataUrl}" style="max-width:100%">`);
+        newTab.document.write(`<!doctype html><body style="margin:0;background:#0d0d12"><img src="${dataUrl}" style="width:100%;max-width:390px;display:block;margin:auto"></body>`);
         newTab.document.title = 'On Cloud 9 Plan';
       } else {
-        // desktop: direct download
-        const link = document.createElement('a');
-        link.download = `oncloud9-plan.png`;
-        link.href = dataUrl;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+        const a = document.createElement('a');
+        a.download = 'oncloud9-plan.png';
+        a.href = dataUrl;
+        a.click();
       }
     } catch (err) {
       alert('ไม่สามารถสร้างรูปได้: ' + err.message);
     } finally {
       setDownloading(false);
     }
-  }, []);
+  }, [planSelections, fanmeetPlan, totalTickets, totalCost]);
   // Group by date → slot → actId → [items]
   const byDate = {};
   eventDates.forEach(d => { byDate[d] = {}; });
@@ -1105,7 +1208,6 @@ function SummaryView({ planSelections, fanmeetPlan, totalTickets, totalCost }) {
         {downloading ? '⏳ กำลังสร้างรูป...' : '📥 ดาวน์โหลดสรุปแผน'}
       </button>
 
-      <div ref={captureRef} className="oc9-summary-capture">
       <div className="oc9-summary-totals">
         <div className="oc9-total-item">
           <span className="oc9-total-label">Tickets ทั้งหมด</span>
@@ -1213,7 +1315,6 @@ function SummaryView({ planSelections, fanmeetPlan, totalTickets, totalCost }) {
         * ราคาโดยประมาณ · 1 ticket = ฿{250} · SNS = 5 tickets · Cha Ba Cha = ฿145+<br />
         * Fanmeet ใช้ Ticket แยกผ่าน iAM48
       </div>
-      </div>{/* end oc9-summary-capture */}
     </div>
   );
 }
