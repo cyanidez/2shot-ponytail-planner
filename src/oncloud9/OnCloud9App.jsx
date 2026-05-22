@@ -497,11 +497,10 @@ function ActivityTable({ activity, date, planSelections, visibleMemberIds, onCel
     return a === activity.id && d === date;
   }).length;
 
-  // Find planned fanmeet that overlaps a given slot
+  // Find fanmeet that overlaps a given slot
   const getFanmeetConflict = (slot) => {
     const slotStart = slotToMinutes(slot);
     return getFanmeetByDate(date).find(fm => {
-      if (!fanmeetPlan?.[`${fm.date}|${fm.time}`]) return false;
       const [startStr, endStr] = fm.time.split(' - ');
       const start = slotToMinutes(startStr.trim());
       const end = slotToMinutes(endStr.trim());
