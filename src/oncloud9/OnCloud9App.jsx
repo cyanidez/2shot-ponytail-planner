@@ -669,6 +669,7 @@ function MemberModal({ data, current, onConfirm, onClose, fanmeetPlan }) {
     if (count <= 0) { onConfirm(0); return; }
     const slotStart = slotToMinutes(data.slot);
     const conflict = getFanmeetByDate(data.date).find(fm => {
+      if (!fanmeetPlan?.[`${fm.date}|${fm.time}`]) return false;
       const [s, e] = fm.time.split(' - ');
       return slotStart >= slotToMinutes(s.trim()) && slotStart < slotToMinutes(e.trim());
     });
