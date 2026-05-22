@@ -140,6 +140,35 @@
   margin-bottom: 0;
   flex-wrap: nowrap;
 }
+.oc9-planner-right-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+.oc9-mode-toggle {
+  display: flex;
+  background: #1e1e2e;
+  border: 1px solid #ffffff18;
+  border-radius: 10px;
+  overflow: hidden;
+}
+.oc9-mode-btn {
+  padding: 7px 11px;
+  background: none;
+  border: none;
+  color: #a0a0c4;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.oc9-mode-btn.active {
+  background: #2d1b69;
+  color: #fff;
+}
+.oc9-mode-btn:hover:not(.active) { background: #ffffff10; }
+
 .oc9-filter-toggle {
   display: flex;
   align-items: center;
@@ -156,7 +185,6 @@
   line-height: 1.3;
   transition: all 0.15s;
   flex-shrink: 0;
-  margin-left: auto;
 }
 .oc9-filter-toggle.active {
   background: #2d1b69;
@@ -1135,3 +1163,74 @@
   color: var(--mc);
   white-space: nowrap;
 }
+
+/* ── Timeline View ── */
+.oc9-timeline {
+  padding: 0 4px;
+}
+.oc9-timeline-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.oc9-tl-table {
+  border-collapse: collapse;
+  width: max-content;
+  min-width: 100%;
+}
+.oc9-tl-th-time {
+  position: sticky;
+  left: 0;
+  background: #0d0d12;
+  z-index: 2;
+  width: 54px;
+  min-width: 54px;
+}
+.oc9-tl-th-act {
+  padding: 8px 6px;
+  text-align: center;
+  border-bottom: 2px solid var(--act-fc, #7c3aed);
+  min-width: 88px;
+  max-width: 100px;
+}
+.oc9-tl-act-emoji { display: block; font-size: 18px; line-height: 1.2; }
+.oc9-tl-act-name  { display: block; font-size: 10px; color: var(--act-fc, #a78bfa); font-weight: 600; line-height: 1.3; white-space: nowrap; }
+.oc9-tl-td-time {
+  position: sticky;
+  left: 0;
+  background: #0d0d12;
+  z-index: 1;
+  font-size: 12px;
+  font-weight: 700;
+  color: #9898c0;
+  padding: 6px 6px 6px 2px;
+  white-space: nowrap;
+  border-right: 1px solid #ffffff12;
+}
+.oc9-tl-td-cell {
+  padding: 4px 4px;
+  vertical-align: top;
+  border-bottom: 1px solid #ffffff08;
+  border-right: 1px solid #ffffff08;
+}
+.oc9-tl-table tbody tr:hover .oc9-tl-td-time,
+.oc9-tl-table tbody tr:hover .oc9-tl-td-cell {
+  background: #ffffff06;
+}
+.oc9-tl-member {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--mc, #c0c0e0);
+  padding: 2px 5px;
+  border-radius: 4px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.12s;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+.oc9-tl-member:hover { background: #ffffff14; }
+.oc9-tl-member.planned { background: color-mix(in srgb, var(--mc) 20%, transparent); }
+.oc9-tl-member.dimmed { opacity: 0.3; }
+.oc9-tl-member.empty { color: #4a4a6a; cursor: default; }
+.oc9-tl-check { font-size: 9px; opacity: 0.9; }

@@ -274,8 +274,14 @@ function FanmeetSection({ date, fanmeetPlan, setFanmeetPlan }) {
 
 function PlannerView({ visibleMemberIds, filterMemberIds, planSelections, onOpenFilterModal, onCellClick, fanmeetPlan, setFanmeetPlan }) {
   const [activeDate, setActiveDate] = useState('all');
-  const [activeActivityId, setActiveActivityId] = useState(null); // null = all
+  const [activeActivityId, setActiveActivityId] = useState(null);
+  const [plannerMode, setPlannerMode] = useState('activity'); // 'activity' | 'timeline'
   const filterCount = filterMemberIds.length;
+
+  const handleSetMode = (mode) => {
+    setPlannerMode(mode);
+    if (mode === 'timeline' && activeDate === 'all') setActiveDate(eventDates[0]);
+  };
 
   const visibleActivities = activeActivityId
     ? activities.filter(a => a.id === activeActivityId)
@@ -313,13 +319,19 @@ function PlannerView({ visibleMemberIds, filterMemberIds, planSelections, onOpen
             );
           })}
         </div>
-        <button className={`oc9-filter-toggle ${filterCount > 0 ? 'active' : ''}`} onClick={onOpenFilterModal}>
-          🔍 {filterCount > 0 ? `${filterCount} คน` : <span>Filter by<br/>member</span>}
-        </button>
+        <div className="oc9-planner-right-controls">
+          <div className="oc9-mode-toggle">
+            <button className={`oc9-mode-btn ${plannerMode === 'activity' ? 'active' : ''}`} onClick={() => handleSetMode('activity')}>📋</button>
+            <button className={`oc9-mode-btn ${plannerMode === 'timeline' ? 'active' : ''}`} onClick={() => handleSetMode('timeline')}>🗓</button>
+          </div>
+          <button className={`oc9-filter-toggle ${filterCount > 0 ? 'active' : ''}`} onClick={onOpenFilterModal}>
+            🔍 {filterCount > 0 ? `${filterCount} คน` : <span>Filter by<br/>member</span>}
+          </button>
+        </div>
       </div>
 
-      {/* Activity filter icons */}
-      <div className="oc9-act-filter-bar">
+      {/* Activity filter icons — activity mode only */}
+      {plannerMode === 'activity' && <div className="oc9-act-filter-bar">
         <button
           className={`oc9-act-filter-btn ${activeActivityId === null ? 'active' : ''}`}
           onClick={() => setActiveActivityId(null)}
@@ -343,10 +355,20 @@ function PlannerView({ visibleMemberIds, filterMemberIds, planSelections, onOpen
             </button>
           );
         })}
-      </div>
+      </div>}
 
-      {/* Content: per date */}
-      {datesToShow.map(date => {
+      {/* Timeline mode */}
+      {plannerMode === 'timeline' && activeDate !== 'all' && (
+        <TimelineView
+          date={activeDate}
+          planSelections={planSelections}
+          visibleMemberIds={visibleMemberIds}
+          onCellClick={onCellClick}
+        />
+      )}
+
+      {/* Activity mode: per date */}
+      {plannerMode === 'activity' && datesToShow.map(date => {
         const [y, m, dd] = date.split('-').map(Number);
         const day = new Date(y, m - 1, dd).getDay();
         const dateColor = day === 6 ? '#7c3aed' : day === 0 ? '#dc2626' : '#eab308';
@@ -376,6 +398,66 @@ function PlannerView({ visibleMemberIds, filterMemberIds, planSelections, onOpen
           </div>
         );
       })}
+    </div>
+  );
+}
+
+// ─── Timeline View ────────────────────────────────────────────────────────────
+
+function TimelineView({ date, planSelections, visibleMemberIds, onCellClick }) {
+  const slots = timeSlots[date] || [];
+
+  return (
+    <div className="oc9-timeline">
+      <div className="oc9-timeline-scroll">
+        <table className="oc9-tl-table">
+          <thead>
+            <tr>
+              <th className="oc9-tl-th-time"></th>
+              {activities.map(act => (
+                <th key={act.id} className="oc9-tl-th-act" style={{ '--act-fc': act.color }}>
+                  <span className="oc9-tl-act-emoji">{act.emoji}</span>
+                  <span className="oc9-tl-act-name">{act.name}</span>
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {slots.map(slot => (
+              <tr key={slot}>
+                <td className="oc9-tl-td-time">{slot}</td>
+                {activities.map(act => {
+                  const memberIds = schedule[date]?.[act.id]?.[slot] || [];
+                  return (
+                    <td key={act.id} className="oc9-tl-td-cell">
+                      {[0, 1, 2].map(i => {
+                        const memberId = memberIds[i];
+                        if (!memberId) return <div key={i} className="oc9-tl-member empty">—</div>;
+                        const member = getMemberById(memberId);
+                        if (!member) return null;
+                        const isVisible = visibleMemberIds.has(memberId);
+                        const k = planKey(act.id, date, slot, i + 1);
+                        const isPlanned = !!planSelections[k];
+                        return (
+                          <div
+                            key={i}
+                            className={`oc9-tl-member ${isPlanned ? 'planned' : ''} ${!isVisible ? 'dimmed' : ''}`}
+                            style={{ '--mc': member.color }}
+                            onClick={() => onCellClick(act.id, date, slot, i + 1, memberId)}
+                          >
+                            {isPlanned && <span className="oc9-tl-check">✓</span>}
+                            {member.name}
+                          </div>
+                        );
+                      })}
+                    </td>
+                  );
+                })}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
