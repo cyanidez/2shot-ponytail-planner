@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { toPng } from 'html-to-image';
 import ProjectSwitcher, { OC9_PROJECT } from '../components/ProjectSwitcher';
 import {
   members, activities, fanmeet, eventDates, timeSlots, ticketPrice,
@@ -1046,6 +1045,7 @@ function SummaryView({ planSelections, fanmeetPlan, totalTickets, totalCost }) {
     if (!captureRef.current) return;
     setDownloading(true);
     try {
+      const { toPng } = await import('html-to-image');
       const dataUrl = await toPng(captureRef.current, {
         backgroundColor: '#0d0d12',
         pixelRatio: 2,
