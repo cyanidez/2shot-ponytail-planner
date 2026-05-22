@@ -425,6 +425,7 @@ function TimelineView({ date, planSelections, visibleMemberIds, onCellClick, fan
 
   return (
     <div className="oc9-timeline">
+      <div className="oc9-tl-hint">แตะชื่อ Member เพื่อเลือกรอบที่จะเข้า</div>
       <div className="oc9-timeline-scroll">
         <table className="oc9-tl-table">
           <thead>
