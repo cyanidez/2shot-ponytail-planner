@@ -416,7 +416,6 @@ function TimelineView({ date, planSelections, visibleMemberIds, onCellClick, fan
   const getFanmeetConflict = (slot) => {
     const slotStart = slotToMinutes(slot);
     return getFanmeetByDate(date).find(fm => {
-      if (!fanmeetPlan?.[`${fm.date}|${fm.time}`]) return false;
       const [startStr, endStr] = fm.time.split(' - ');
       const start = slotToMinutes(startStr.trim());
       const end = slotToMinutes(endStr.trim());
