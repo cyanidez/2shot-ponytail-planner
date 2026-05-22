@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import html2canvas from 'html2canvas';
+import { toPng } from 'html-to-image';
 import ProjectSwitcher, { OC9_PROJECT } from '../components/ProjectSwitcher';
 import {
   members, activities, fanmeet, eventDates, timeSlots, ticketPrice,
@@ -1046,14 +1046,10 @@ function SummaryView({ planSelections, fanmeetPlan, totalTickets, totalCost }) {
     if (!captureRef.current) return;
     setDownloading(true);
     try {
-      const canvas = await html2canvas(captureRef.current, {
+      const dataUrl = await toPng(captureRef.current, {
         backgroundColor: '#0d0d12',
-        scale: 2,
-        useCORS: true,
-        allowTaint: true,
-        logging: false,
+        pixelRatio: 2,
       });
-      const dataUrl = canvas.toDataURL('image/png');
       // mobile Safari fallback: open in new tab so user can save
       const newTab = window.open();
       if (newTab) {
