@@ -442,6 +442,14 @@
   vertical-align: middle;
 }
 .oc9-slot-col { width: 44px; text-align: left !important; padding-left: 2px !important; }
+.oc9-slot-row--fanmeet { background: #ffd70008; }
+.oc9-fanmeet-conflict-text {
+  display: block;
+  font-size: 9px;
+  color: #ffd700;
+  margin-top: 2px;
+  line-height: 1.3;
+}
 .oc9-slot-cell {
   font-size: 11px;
   color: #9898c0;
@@ -538,6 +546,7 @@
   padding: 16px;
   overflow-y: auto;
 }
+.oc9-overlay--top { z-index: 1010; background: #000000c0; }
 .oc9-modal {
   background: #1a1a2e;
   border: 1px solid #ffffff18;
@@ -809,11 +818,12 @@
   align-items: center;
   justify-content: space-between;
   padding: 10px 14px;
-  background: #1a1a2a;
+  background: color-mix(in srgb, var(--dc, #7c3aed) 12%, #1a1a2a);
   font-size: 13px;
   font-weight: 700;
-  color: #d8d8f8;
+  color: var(--dc, #d8d8f8);
   border-bottom: 1px solid #ffffff0a;
+  border-left: 3px solid var(--dc, #7c3aed);
 }
 .oc9-day-cost { color: #34d399; font-size: 13px; }
 
@@ -828,31 +838,70 @@
 }
 .oc9-summary-time { color: #9898c0; font-size: 11px; }
 
-.oc9-summary-act { padding: 10px 14px; border-bottom: 1px solid #ffffff06; }
-.oc9-summary-act-header {
+/* ── Summary: new Time → Activity → Member layout ── */
+.oc9-summary-slot-group {
+  border-bottom: 1px solid #ffffff08;
+}
+.oc9-summary-slot-group:last-child { border-bottom: none; }
+
+.oc9-summary-slot-header {
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  font-size: 12px;
-  font-weight: 700;
-  margin-bottom: 6px;
+  padding: 8px 14px 4px;
 }
-.oc9-summary-table {
-  width: 100%;
-  border-collapse: collapse;
+.oc9-summary-slot-time {
   font-size: 11px;
+  font-weight: 700;
+  color: #9898c0;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
 }
-.oc9-summary-table th {
-  text-align: left;
-  color: #7878a8;
-  padding: 3px 6px;
+.oc9-summary-slot-cost {
+  font-size: 12px;
+  color: #34d399;
   font-weight: 600;
 }
-.oc9-summary-table td {
-  padding: 4px 6px;
-  color: #d8d8f4;
-  border-bottom: 1px solid #ffffff06;
+
+.oc9-summary-act-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 6px 14px 8px;
+  border-left: 3px solid var(--act-color, #7c3aed);
+  margin: 2px 0;
+  background: #0f0f18;
 }
-.oc9-summary-table tr:last-child td { border-bottom: none; }
+.oc9-summary-act-name {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--act-color, #a78bfa);
+  white-space: nowrap;
+  min-width: 100px;
+  padding-top: 2px;
+}
+.oc9-summary-members {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  flex: 1;
+}
+.oc9-summary-member-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--mc, #7c3aed) 15%, #1e1e30);
+  border: 1px solid color-mix(in srgb, var(--mc, #7c3aed) 40%, transparent);
+  font-size: 12px;
+  font-weight: 600;
+}
+.oc9-summary-chip-count {
+  font-size: 11px;
+  color: #a78bfa;
+  font-weight: 700;
+}
 
 .oc9-grand-total {
   display: flex;
@@ -1078,7 +1127,7 @@
   background: color-mix(in srgb, var(--mc) 10%, #0f0f1a);
   border-left-color: var(--mc);
 }
-.oc9-ms-slot-time { font-size: 11px; color: #9898c0; white-space: nowrap; min-width: 118px; }
+.oc9-ms-slot-time { font-size: 11px; color: #9898c0; white-space: normal; min-width: 118px; }
 .oc9-ms-slot-act { font-size: 12px; color: #d8d8f4; flex: 1; }
 .oc9-ms-slot-count {
   font-size: 11px;

@@ -5,6 +5,7 @@ import {
   getMemberById, getMemberImageUrl, getActivityById, getMemberGroups,
   schedule, getFanmeetByDate, formatShortDate, getDayName,
   getActivityCost, isSlotActive, slotToMinutes, formatSlotRange,
+  eventName, eventSubtitle,
 } from './data/oncloud9-members';
 import './oncloud9.css';
 
@@ -30,6 +31,11 @@ function OnCloud9App() {
     try { return JSON.parse(localStorage.getItem('oncloud9_fanmeet') || '{}'); } catch { return {}; }
   });
   const [showClearConfirm, setShowClearConfirm] = useState(false);
+
+  useEffect(() => {
+    document.title = `${eventName} | ${eventSubtitle}`;
+    return () => { document.title = 'BNK48 2-Shot Ponytail Planner'; };
+  }, []);
 
   useEffect(() => {
     localStorage.setItem(PLAN_KEY, JSON.stringify(planSelections));
@@ -147,6 +153,7 @@ function OnCloud9App() {
           current={planSelections[planKey(modalData.actId, modalData.date, modalData.slot, modalData.station)] || 0}
           onConfirm={confirmModal}
           onClose={closeModal}
+          fanmeetPlan={fanmeetPlan}
         />
       )}
 
@@ -362,6 +369,7 @@ function PlannerView({ visibleMemberIds, filterMemberIds, planSelections, onOpen
                 planSelections={planSelections}
                 visibleMemberIds={visibleMemberIds}
                 onCellClick={onCellClick}
+                fanmeetPlan={fanmeetPlan}
                 defaultOpen={true}
               />
             ))}
@@ -372,7 +380,7 @@ function PlannerView({ visibleMemberIds, filterMemberIds, planSelections, onOpen
   );
 }
 
-function ActivityTable({ activity, date, planSelections, visibleMemberIds, onCellClick, defaultOpen = true }) {
+function ActivityTable({ activity, date, planSelections, visibleMemberIds, onCellClick, fanmeetPlan, defaultOpen = true }) {
   const slots = timeSlots[date] || [];
   const daySchedule = schedule[date]?.[activity.id] || {};
   const [collapsed, setCollapsed] = useState(!defaultOpen);
@@ -382,6 +390,18 @@ function ActivityTable({ activity, date, planSelections, visibleMemberIds, onCel
     const [a, d] = k.split('|');
     return a === activity.id && d === date;
   }).length;
+
+  // Find planned fanmeet that overlaps a given slot
+  const getFanmeetConflict = (slot) => {
+    const slotStart = slotToMinutes(slot);
+    return getFanmeetByDate(date).find(fm => {
+      if (!fanmeetPlan?.[`${fm.date}|${fm.time}`]) return false;
+      const [startStr, endStr] = fm.time.split(' - ');
+      const start = slotToMinutes(startStr.trim());
+      const end = slotToMinutes(endStr.trim());
+      return slotStart >= start && slotStart < end;
+    }) || null;
+  };
 
   return (
     <div className="oc9-activity-block" style={{ '--act-color': activity.color }}>
@@ -417,9 +437,13 @@ function ActivityTable({ activity, date, planSelections, visibleMemberIds, onCel
             <tbody>
               {slots.map(slot => {
                 const stationMembers = daySchedule[slot] || [];
+                const conflict = getFanmeetConflict(slot);
                 return (
-                  <tr key={slot}>
-                    <td className="oc9-slot-cell">{formatSlotRange(slot)}</td>
+                  <tr key={slot} className={conflict ? 'oc9-slot-row--fanmeet' : ''}>
+                    <td className="oc9-slot-cell">
+                      {formatSlotRange(slot)}
+                      {conflict && <div className="oc9-fanmeet-conflict-text">{conflict.label}</div>}
+                    </td>
                     {[0, 1, 2].map(si => (
                       <td key={si} className="oc9-station-cell">
                         {stationMembers[si] ? (
@@ -525,8 +549,9 @@ function FilterModal({ selected, onConfirm, onClose }) {
 
 // ─── Member Modal ─────────────────────────────────────────────────────────────
 
-function MemberModal({ data, current, onConfirm, onClose }) {
+function MemberModal({ data, current, onConfirm, onClose, fanmeetPlan }) {
   const [count, setCount] = useState(current || 1);
+  const [fanmeetConflict, setFanmeetConflict] = useState(null);
   const member = getMemberById(data.memberId);
   const activity = getActivityById(data.actId);
   const [imgErr, setImgErr] = useState(false);
@@ -535,53 +560,84 @@ function MemberModal({ data, current, onConfirm, onClose }) {
 
   const cost = getActivityCost(data.actId, count);
 
+  const handleConfirm = () => {
+    if (count <= 0) { onConfirm(0); return; }
+    const slotStart = slotToMinutes(data.slot);
+    const conflict = getFanmeetByDate(data.date).find(fm => {
+      if (!fanmeetPlan?.[`${fm.date}|${fm.time}`]) return false;
+      const [s, e] = fm.time.split(' - ');
+      return slotStart >= slotToMinutes(s.trim()) && slotStart < slotToMinutes(e.trim());
+    });
+    if (conflict) setFanmeetConflict(conflict);
+    else onConfirm(count);
+  };
+
   return (
-    <div className="oc9-overlay" onClick={onClose}>
-      <div className="oc9-modal" onClick={e => e.stopPropagation()}>
-        <div className="oc9-modal-header">
-          <span style={{ color: member.color }}>{member.name}</span>
-          <button className="oc9-modal-close" onClick={onClose}>×</button>
-        </div>
-        <div className="oc9-modal-body">
-          <div className="oc9-modal-photo">
-            {!imgErr ? (
-              <img src={getMemberImageUrl(member.name)} alt={member.name} onError={() => setImgErr(true)} />
-            ) : (
-              <div className="oc9-member-initial large" style={{ background: member.color }}>{member.name[0]}</div>
+    <>
+      <div className="oc9-overlay" onClick={onClose}>
+        <div className="oc9-modal" onClick={e => e.stopPropagation()}>
+          <div className="oc9-modal-header">
+            <span style={{ color: member.color }}>{member.name}</span>
+            <button className="oc9-modal-close" onClick={onClose}>×</button>
+          </div>
+          <div className="oc9-modal-body">
+            <div className="oc9-modal-photo">
+              {!imgErr ? (
+                <img src={getMemberImageUrl(member.name)} alt={member.name} onError={() => setImgErr(true)} />
+              ) : (
+                <div className="oc9-member-initial large" style={{ background: member.color }}>{member.name[0]}</div>
+              )}
+            </div>
+            <div className="oc9-modal-info">
+              <div className="oc9-modal-act">{activity.name} · สถานี {data.station}</div>
+              <div className="oc9-modal-slot">{getDayName(data.date)} {parseInt(data.date.split('-')[2])} · {formatSlotRange(data.slot)}</div>
+              {activity.id === 'hachi_cha' ? (
+                <div className="oc9-modal-price">฿{activity.hachiChaPrice}+ (ซื้อเครื่องดื่ม)</div>
+              ) : (
+                <div className="oc9-modal-price">{activity.ticketsRequired} ticket/ครั้ง</div>
+              )}
+            </div>
+            <div className="oc9-counter">
+              <button className="oc9-cnt-btn" onClick={() => setCount(c => Math.max(0, c - 1))}>−</button>
+              <input
+                className="oc9-cnt-input"
+                type="text"
+                value={count}
+                onChange={e => {
+                  const v = parseInt(e.target.value);
+                  if (!isNaN(v) && v >= 0 && v <= 20) setCount(v);
+                }}
+              />
+              <button className="oc9-cnt-btn" onClick={() => setCount(c => Math.min(20, c + 1))}>+</button>
+            </div>
+            {cost > 0 && <div className="oc9-modal-cost">฿{cost.toLocaleString()}</div>}
+          </div>
+          <div className="oc9-modal-footer">
+            <button className="oc9-btn-confirm" onClick={handleConfirm}>ยืนยัน</button>
+            {current > 0 && (
+              <button className="oc9-btn-remove" onClick={() => onConfirm(0)}>ลบออก</button>
             )}
           </div>
-          <div className="oc9-modal-info">
-            <div className="oc9-modal-act">{activity.name} · สถานี {data.station}</div>
-            <div className="oc9-modal-slot">{data.date} · {formatSlotRange(data.slot)}</div>
-            {activity.id === 'hachi_cha' ? (
-              <div className="oc9-modal-price">฿{activity.hachiChaPrice}+ (ซื้อเครื่องดื่ม)</div>
-            ) : (
-              <div className="oc9-modal-price">{activity.ticketsRequired} ticket/ครั้ง</div>
-            )}
-          </div>
-          <div className="oc9-counter">
-            <button className="oc9-cnt-btn" onClick={() => setCount(c => Math.max(0, c - 1))}>−</button>
-            <input
-              className="oc9-cnt-input"
-              type="text"
-              value={count}
-              onChange={e => {
-                const v = parseInt(e.target.value);
-                if (!isNaN(v) && v >= 0 && v <= 20) setCount(v);
-              }}
-            />
-            <button className="oc9-cnt-btn" onClick={() => setCount(c => Math.min(20, c + 1))}>+</button>
-          </div>
-          {cost > 0 && <div className="oc9-modal-cost">฿{cost.toLocaleString()}</div>}
-        </div>
-        <div className="oc9-modal-footer">
-          <button className="oc9-btn-confirm" onClick={() => onConfirm(count)}>ยืนยัน</button>
-          {current > 0 && (
-            <button className="oc9-btn-remove" onClick={() => onConfirm(0)}>ลบออก</button>
-          )}
         </div>
       </div>
-    </div>
+
+      {fanmeetConflict && (
+        <div className="oc9-overlay oc9-overlay--top" onClick={() => setFanmeetConflict(null)}>
+          <div className="oc9-modal oc9-confirm-modal" onClick={e => e.stopPropagation()}>
+            <p>
+              ⭐ เวลานี้ตรงกับ Fanmeet<br/>
+              <strong style={{ color: '#ffd700' }}>{fanmeetConflict.label}</strong><br/>
+              <span style={{ fontSize: '13px', color: '#9898c0' }}>{fanmeetConflict.time}</span><br/>
+              แน่ใจเหรอ?
+            </p>
+            <div className="oc9-confirm-btns">
+              <button className="oc9-btn-confirm" onClick={() => { onConfirm(count); setFanmeetConflict(null); }}>ยืนยัน</button>
+              <button className="oc9-btn-cancel" onClick={() => setFanmeetConflict(null)}>ไม่</button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 
@@ -824,6 +880,14 @@ function MemberScheduleCard({ member, dimmed, planSelections, onCellClick }) {
             });
             slots.sort((a, b) => a.slot.localeCompare(b.slot));
 
+            const getFanmeetConflict = (slot) => {
+              const slotStart = slotToMinutes(slot);
+              return getFanmeetByDate(date).find(fm => {
+                const [startStr, endStr] = fm.time.split(' - ');
+                return slotStart >= slotToMinutes(startStr.trim()) && slotStart < slotToMinutes(endStr.trim());
+              }) || null;
+            };
+
             return (
               <div key={date} className="oc9-ms-day">
                 <div className="oc9-ms-day-label" style={{ color: dateColor }}>
@@ -833,22 +897,28 @@ function MemberScheduleCard({ member, dimmed, planSelections, onCellClick }) {
                   <div className="oc9-ms-empty">ไม่มีกิจกรรม</div>
                 ) : (
                   <div className="oc9-ms-slots">
-                    {slots.map((s, i) => (
-                      <div
-                        key={i}
-                        className={`oc9-ms-slot-row ${s.count > 0 ? 'planned' : ''}`}
-                        style={{ '--act-color': s.act?.color }}
-                        onClick={() => onCellClick(s.actId, date, s.slot, s.station, member.id)}
-                      >
-                        <span className="oc9-ms-slot-time">{formatSlotRange(s.slot)}</span>
-                        <span className="oc9-ms-slot-act">
-                          {s.act?.emoji} {s.act?.name}
-                        </span>
-                        <span className="oc9-ms-slot-count">
-                          {s.count > 0 ? `${s.count} ใบ` : '+ plan'}
-                        </span>
-                      </div>
-                    ))}
+                    {slots.map((s, i) => {
+                      const conflict = getFanmeetConflict(s.slot);
+                      return (
+                        <div
+                          key={i}
+                          className={`oc9-ms-slot-row ${s.count > 0 ? 'planned' : ''}`}
+                          style={{ '--act-color': s.act?.color }}
+                          onClick={() => onCellClick(s.actId, date, s.slot, s.station, member.id)}
+                        >
+                          <span className="oc9-ms-slot-time">
+                            {formatSlotRange(s.slot)}
+                            {conflict && <span className="oc9-fanmeet-conflict-text">{conflict.label}</span>}
+                          </span>
+                          <span className="oc9-ms-slot-act">
+                            {s.act?.emoji} {s.act?.name}
+                          </span>
+                          <span className="oc9-ms-slot-count">
+                            {s.count > 0 ? `${s.count} ใบ` : '+ plan'}
+                          </span>
+                        </div>
+                      );
+                    })}
                   </div>
                 )}
               </div>
@@ -863,19 +933,20 @@ function MemberScheduleCard({ member, dimmed, planSelections, onCellClick }) {
 // ─── Summary View ─────────────────────────────────────────────────────────────
 
 function SummaryView({ planSelections, fanmeetPlan, totalTickets, totalCost }) {
-  // Group selections by date → activity → slot
+  // Group by date → slot → actId → [items]
   const byDate = {};
   eventDates.forEach(d => { byDate[d] = {}; });
 
   Object.entries(planSelections).forEach(([k, count]) => {
     const [actId, date, slot, station] = k.split('|');
     if (!byDate[date]) return;
-    if (!byDate[date][actId]) byDate[date][actId] = [];
+    if (!byDate[date][slot]) byDate[date][slot] = {};
+    if (!byDate[date][slot][actId]) byDate[date][slot][actId] = [];
     const stationMembers = schedule[date]?.[actId]?.[slot] || [];
     const memberId = stationMembers[parseInt(station) - 1];
     const member = getMemberById(memberId);
     const activity = getActivityById(actId);
-    byDate[date][actId].push({ slot, station, member, count, activity, cost: getActivityCost(actId, count) });
+    byDate[date][slot][actId].push({ member, count, cost: getActivityCost(actId, count) });
   });
 
   const hasPlan = Object.values(byDate).some(d => Object.keys(d).length > 0)
@@ -893,7 +964,6 @@ function SummaryView({ planSelections, fanmeetPlan, totalTickets, totalCost }) {
 
   return (
     <div className="oc9-summary">
-      {/* Totals */}
       <div className="oc9-summary-totals">
         <div className="oc9-total-item">
           <span className="oc9-total-label">Tickets ทั้งหมด</span>
@@ -906,67 +976,95 @@ function SummaryView({ planSelections, fanmeetPlan, totalTickets, totalCost }) {
       </div>
 
       {eventDates.map(date => {
-        const datePlan = byDate[date];
+        const slotMap = byDate[date];
         const dayFanmeets = getFanmeetByDate(date).filter(fm => fanmeetPlan[`${fm.date}|${fm.time}`]);
-        if (Object.keys(datePlan).length === 0 && dayFanmeets.length === 0) return null;
+        const allSlots = timeSlots[date] || [];
+        const hasAnything = Object.keys(slotMap).length > 0 || dayFanmeets.length > 0;
+        if (!hasAnything) return null;
 
-        const dayCost = Object.values(datePlan).flat().reduce((s, i) => s + i.cost, 0);
+        const [y, m, dd] = date.split('-').map(Number);
+        const day = new Date(y, m - 1, dd).getDay();
+        const dateColor = day === 6 ? '#7c3aed' : day === 0 ? '#dc2626' : '#eab308';
+        const dayCost = Object.values(slotMap).flatMap(s => Object.values(s).flat()).reduce((s, i) => s + i.cost, 0);
 
         return (
           <div key={date} className="oc9-summary-day">
-            <div className="oc9-summary-day-header">
-              <span>{getDayName(date)} {formatShortDate(date)}</span>
+            <div className="oc9-summary-day-header" style={{ '--dc': dateColor }}>
+              <span>{getDayName(date)} · {formatShortDate(date)}</span>
               {dayCost > 0 && <span className="oc9-day-cost">฿{dayCost.toLocaleString()}</span>}
             </div>
 
-            {/* Fanmeet */}
-            {dayFanmeets.map((fm, i) => (
-              <div key={i} className="oc9-summary-fanmeet">
-                <span>⭐ {fm.label}</span>
-                <span className="oc9-summary-time">{fm.time}</span>
-              </div>
-            ))}
+            {(() => {
+              // Merge fanmeets + activity slots, sort by start time
+              const merged = [];
+              dayFanmeets.forEach(fm => {
+                const [startStr] = fm.time.split(' - ');
+                merged.push({ type: 'fanmeet', startMinutes: slotToMinutes(startStr.trim()), fm });
+              });
+              allSlots.forEach(slot => {
+                const actMap = slotMap[slot] || {};
+                if (Object.keys(actMap).length > 0) {
+                  merged.push({ type: 'slot', startMinutes: slotToMinutes(slot), slot, actMap });
+                }
+              });
+              merged.sort((a, b) => a.startMinutes - b.startMinutes);
 
-            {/* Activities */}
-            {Object.entries(datePlan).map(([actId, items]) => {
-              const act = getActivityById(actId);
-              if (!act || items.length === 0) return null;
-              const actCost = items.reduce((s, i) => s + i.cost, 0);
-              return (
-                <div key={actId} className="oc9-summary-act">
-                  <div className="oc9-summary-act-header" style={{ color: act.color }}>
-                    <span>{act.name}</span>
-                    <span>฿{actCost.toLocaleString()}</span>
+              return merged.map((item, idx) => {
+                if (item.type === 'fanmeet') {
+                  return (
+                    <div key={`fm-${idx}`} className="oc9-summary-slot-group">
+                      <div className="oc9-summary-slot-header">
+                        <span className="oc9-summary-slot-time">{item.fm.time}</span>
+                      </div>
+                      <div className="oc9-summary-act-row" style={{ '--act-color': '#ffd700' }}>
+                        <span className="oc9-summary-act-name">⭐ แฟนมีต</span>
+                        <div className="oc9-summary-members">
+                          <span className="oc9-summary-member-chip" style={{ '--mc': '#ffd700' }}>
+                            <span style={{ color: '#ffd700' }}>{item.fm.label}</span>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                }
+                const { slot, actMap } = item;
+                const slotCost = Object.values(actMap).flat().reduce((s, i) => s + i.cost, 0);
+                return (
+                  <div key={slot} className="oc9-summary-slot-group">
+                    <div className="oc9-summary-slot-header">
+                      <span className="oc9-summary-slot-time">{formatSlotRange(slot)}</span>
+                      {slotCost > 0 && <span className="oc9-summary-slot-cost">฿{slotCost.toLocaleString()}</span>}
+                    </div>
+                    {Object.entries(actMap).map(([actId, items]) => {
+                      const act = getActivityById(actId);
+                      if (!act) return null;
+                      return (
+                        <div key={actId} className="oc9-summary-act-row" style={{ '--act-color': act.color }}>
+                          <span className="oc9-summary-act-name">{act.emoji} {act.name}</span>
+                          <div className="oc9-summary-members">
+                            {items.map((item, i) => (
+                              <span key={i} className="oc9-summary-member-chip" style={{ '--mc': item.member?.color }}>
+                                <span style={{ color: item.member?.color }}>{item.member?.name || '—'}</span>
+                                <span className="oc9-summary-chip-count">×{item.count}</span>
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      );
+                    })}
                   </div>
-                  <table className="oc9-summary-table">
-                    <thead>
-                      <tr><th>เวลา</th><th>สมาชิก</th><th>จำนวน</th><th>ราคา</th></tr>
-                    </thead>
-                    <tbody>
-                      {items.sort((a, b) => a.slot.localeCompare(b.slot)).map((item, i) => (
-                        <tr key={i}>
-                          <td>{formatSlotRange(item.slot)}</td>
-                          <td style={{ color: item.member?.color }}>{item.member?.name || '—'}</td>
-                          <td>×{item.count}</td>
-                          <td>฿{item.cost.toLocaleString()}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              );
-            })}
+                );
+              });
+            })()}
           </div>
         );
       })}
 
-      {/* Grand total */}
       <div className="oc9-grand-total">
         <span>Grand Total</span>
         <span>฿{totalCost.toLocaleString()}</span>
       </div>
 
-      {/* Per-member ticket breakdown */}
       <MemberTicketBreakdown planSelections={planSelections} />
 
       <div className="oc9-summary-note">

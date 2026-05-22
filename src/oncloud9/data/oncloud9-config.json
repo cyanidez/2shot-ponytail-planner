@@ -75,7 +75,7 @@
       "name": "ข้ามไป ข้ามให้ได้",
       "nameEn": "Balance Bridge",
       "emoji": "🌉",
-      "description": "ข้ามสะพานใน 10 วินาที",
+      "description": "เดินข้ามผ่านสะพานทางแคบและอุปสรรคต่างๆ ในระยะเวลา 10 วินาที เพื่อเจอกับ Member | ชนะ: รับ Selfie Card จากมือ Member | แพ้: รับ Selfie Card จาก Staff",
       "ticketsRequired": 1,
       "color": "#FF6B9D"
     },
@@ -87,14 +87,14 @@
       "description": "คิวพบเมมเบอร์ + สั่งเครื่องดื่ม",
       "ticketsRequired": 0,
       "hachiChaPrice": 145,
-      "color": "#FF9800"
+      "color": "#1b5e20"
     },
     {
       "id": "silly_face",
       "name": "Woh Oh Oh",
       "nameEn": "Silly Face Contest",
       "emoji": "🤪",
-      "description": "แข่งทำหน้าตลกใน 5 วินาที",
+      "description": "แข่งกันทำหน้าตลกกับ Member 5 วินาที โดยจะมีฉากกั้น แล้วเปิดพร้อมกัน | ใครทำเวเซอร์ก่อน ถ้าไม่มีใครตลก แฟนคลับชนะ ถ้าทำเราทั้งคู่ Member ชนะ | ชนะ: รับ Selfie Card จากมือ Member | แพ้: รับ Selfie Card จาก Staff",
       "ticketsRequired": 1,
       "color": "#FFD600"
     },
@@ -103,7 +103,7 @@
       "name": "ใจมันสั่น",
       "nameEn": "Heart Rate Challenge",
       "emoji": "💓",
-      "description": "เซอร์ไพรส์เมมเบอร์ 15 วินาที",
+      "description": "เกมแข่งจ้องตากับ Member 15 วินาที โดยจะมีเครื่องวัด Heart Rate (แบบหนีบนิ้ว) | heart rate ขึ้นเกิน 20 bpm+ (โดนกดกาวส์) ชนะ | heart rate ไม่ถึง 20 bpm (จิตแข็งดั้งหินผา) แพ้ | ชนะ: รับ Selfie Card จากมือ Member | แพ้: รับ Selfie Card จาก Staff",
       "ticketsRequired": 1,
       "color": "#F44336"
     },
@@ -112,7 +112,7 @@
       "name": "Blue White Blue",
       "nameEn": "Ball Toss Game",
       "emoji": "🎯",
-      "description": "โยนบอลแบบ Tic-Tac-Toe",
+      "description": "เกมแข่งโยนบอลกับ Member ลงตาราง 9 ช่อง ใครโยนครบตามแนว 3 ช่องก่อนชนะ | ต้องโยนลง 3 ช่องติดกัน แนวนอน แนวตั้ง หรือแนวทะแยง โดยจะมีลูกบอลให้คนละ 5 ลูก | ชนะ: รับ Selfie Card จากมือ Member | แพ้: รับ Selfie Card จาก Staff",
       "ticketsRequired": 1,
       "color": "#2196F3"
     },
@@ -121,7 +121,7 @@
       "name": "Lip ของเธอ",
       "nameEn": "Tattoo Sticker Booth",
       "emoji": "💋",
-      "description": "ติดสติ๊กเกอร์รอยสัก",
+      "description": "กิจกรรมแปะ Tattoo กับ Member | หลังจากร่วมกิจกรรม จะได้รับ Selfie Card จากมือ Member",
       "ticketsRequired": 1,
       "color": "#9C27B0"
     },
@@ -130,7 +130,7 @@
       "name": "SNS",
       "nameEn": "Photo Booth",
       "emoji": "📸",
-      "description": "ถ่ายรูปกับ Album Frame พิเศษ",
+      "description": "กิจกรรมถ่าย Photo Booth ใส่กรอบลาย Concept BNK48 & CGM48 ทั้ง 9 Album | หลังจากร่วมกิจกรรม จะได้รับ Selfie Card จาก Staff",
       "ticketsRequired": 5,
       "color": "#00BCD4"
     },
@@ -139,7 +139,7 @@
       "name": "บนเนินเขา",
       "nameEn": "Mini Golf",
       "emoji": "⛳",
-      "description": "ตีกอล์ฟมินิครั้งเดียว",
+      "description": "เกมพัตต์กอล์ฟขึ้นเนิน เพื่อลงหลุม โดยจะสามารถตีได้ 1 ครั้ง | ชนะ: รับ Selfie Card จากมือ Member | แพ้: รับ Selfie Card จาก Staff",
       "ticketsRequired": 1,
       "color": "#4CAF50"
     },
@@ -148,7 +148,7 @@
       "name": "Ponytail",
       "nameEn": "Pin-the-Tail Game",
       "emoji": "🐴",
-      "description": "ปิดตาปักหางม้า",
+      "description": "เกมปิดตา ติดหางม้า บนหัวตุ๊กตา | ท่านจะปิดตาแล้วเมมเบอร์จะหมุนหัวตุ๊กตา ก่อนจะติด ให้พูด หยุด แล้วติดให้ตรงตำแหน่ง | ชนะ: รับ Selfie Card จากมือ Member | แพ้: รับ Selfie Card จาก Staff",
       "ticketsRequired": 1,
       "color": "#FF5722"
     }
@@ -402,7 +402,7 @@
     },
     "pin_tail": {
       "2026-05-30": {
-        "14:30": ["b3_pancake",  "b6_khowjow",      "cgm2_nana"],
+        "14:30": ["b3_pancake",  "b6_inkcha",       "cgm2_nana"],
         "15:30": ["b3_yoghurt",  "b5_galeya",       "b5_jew"],
         "16:30": ["b4_marine",   "b6_blythe",       "b6_praew"],
         "17:30": ["b4_micha",    "b4_patt",         "b5_niya"],

@@ -1,5 +1,7 @@
 import config from './oncloud9-config.json';
 
+export const eventName = config.eventName;
+export const eventSubtitle = config.eventSubtitle;
 export const members = config.members;
 export const scheduleData = config.scheduleData || {};
 export const activities = config.activities;
