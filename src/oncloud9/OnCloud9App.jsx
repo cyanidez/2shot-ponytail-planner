@@ -459,7 +459,8 @@ function TimelineView({ date, planSelections, visibleMemberIds, onCellClick, fan
                         if (!member) return null;
                         const isVisible = visibleMemberIds.has(memberId);
                         const k = planKey(act.id, date, slot, i + 1);
-                        const isPlanned = !!planSelections[k];
+                        const count = planSelections[k] || 0;
+                        const isPlanned = count > 0;
                         return (
                           <div
                             key={i}
@@ -467,8 +468,8 @@ function TimelineView({ date, planSelections, visibleMemberIds, onCellClick, fan
                             style={{ '--mc': member.color }}
                             onClick={() => onCellClick(act.id, date, slot, i + 1, memberId)}
                           >
-                            {isPlanned && <span className="oc9-tl-check">✓</span>}
                             {member.name}
+                            {isPlanned && <span className="oc9-tl-badge">×{count}</span>}
                           </div>
                         );
                       })}
@@ -669,7 +670,6 @@ function MemberModal({ data, current, onConfirm, onClose, fanmeetPlan }) {
     if (count <= 0) { onConfirm(0); return; }
     const slotStart = slotToMinutes(data.slot);
     const conflict = getFanmeetByDate(data.date).find(fm => {
-      if (!fanmeetPlan?.[`${fm.date}|${fm.time}`]) return false;
       const [s, e] = fm.time.split(' - ');
       return slotStart >= slotToMinutes(s.trim()) && slotStart < slotToMinutes(e.trim());
     });

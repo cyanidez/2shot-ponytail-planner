@@ -1233,6 +1233,14 @@
 .oc9-tl-member.dimmed { opacity: 0.3; }
 .oc9-tl-member.empty { color: #4a4a6a; cursor: default; }
 .oc9-tl-check { font-size: 9px; opacity: 0.9; }
+.oc9-tl-badge {
+  font-size: 10px;
+  font-weight: 700;
+  background: color-mix(in srgb, var(--mc) 30%, transparent);
+  border-radius: 4px;
+  padding: 0 3px;
+  margin-left: 2px;
+}
 .oc9-tl-hint {
   font-size: 12px;
   color: #a78bfa;
