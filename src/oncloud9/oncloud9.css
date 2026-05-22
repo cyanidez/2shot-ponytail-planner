@@ -1241,6 +1241,23 @@
   padding: 0 3px;
   margin-left: 2px;
 }
+.oc9-download-btn {
+  display: block;
+  width: 100%;
+  padding: 11px;
+  background: #1e1a30;
+  border: 1px solid #7c3aed55;
+  border-radius: 10px;
+  color: #d0b8ff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 14px;
+  transition: all 0.15s;
+}
+.oc9-download-btn:hover:not(:disabled) { background: #2d1b69; border-color: #7c3aed; }
+.oc9-download-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+.oc9-summary-capture { padding: 12px; background: #0d0d12; border-radius: 10px; }
 .oc9-tl-hint {
   font-size: 12px;
   color: #a78bfa;

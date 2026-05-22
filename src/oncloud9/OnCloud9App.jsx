@@ -1,4 +1,5 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
+import html2canvas from 'html2canvas';
 import ProjectSwitcher, { OC9_PROJECT } from '../components/ProjectSwitcher';
 import {
   members, activities, fanmeet, eventDates, timeSlots, ticketPrice,
@@ -1038,6 +1039,27 @@ function MemberScheduleCard({ member, dimmed, planSelections, onCellClick }) {
 // ─── Summary View ─────────────────────────────────────────────────────────────
 
 function SummaryView({ planSelections, fanmeetPlan, totalTickets, totalCost }) {
+  const captureRef = useRef(null);
+  const [downloading, setDownloading] = useState(false);
+
+  const handleDownload = useCallback(async () => {
+    if (!captureRef.current) return;
+    setDownloading(true);
+    try {
+      const canvas = await html2canvas(captureRef.current, {
+        backgroundColor: '#0d0d12',
+        scale: 2,
+        useCORS: true,
+        logging: false,
+      });
+      const link = document.createElement('a');
+      link.download = `oncloud9-plan-${Date.now()}.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    } finally {
+      setDownloading(false);
+    }
+  }, []);
   // Group by date → slot → actId → [items]
   const byDate = {};
   eventDates.forEach(d => { byDate[d] = {}; });
@@ -1069,6 +1091,11 @@ function SummaryView({ planSelections, fanmeetPlan, totalTickets, totalCost }) {
 
   return (
     <div className="oc9-summary">
+      <button className="oc9-download-btn" onClick={handleDownload} disabled={downloading}>
+        {downloading ? '⏳ กำลังสร้างรูป...' : '📥 ดาวน์โหลดสรุปแผน'}
+      </button>
+
+      <div ref={captureRef} className="oc9-summary-capture">
       <div className="oc9-summary-totals">
         <div className="oc9-total-item">
           <span className="oc9-total-label">Tickets ทั้งหมด</span>
@@ -1176,6 +1203,7 @@ function SummaryView({ planSelections, fanmeetPlan, totalTickets, totalCost }) {
         * ราคาโดยประมาณ · 1 ticket = ฿{250} · SNS = 5 tickets · Cha Ba Cha = ฿145+<br />
         * Fanmeet ใช้ Ticket แยกผ่าน iAM48
       </div>
+      </div>{/* end oc9-summary-capture */}
     </div>
   );
 }
