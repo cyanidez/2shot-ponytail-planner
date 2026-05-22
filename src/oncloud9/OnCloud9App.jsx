@@ -1050,12 +1050,26 @@ function SummaryView({ planSelections, fanmeetPlan, totalTickets, totalCost }) {
         backgroundColor: '#0d0d12',
         scale: 2,
         useCORS: true,
+        allowTaint: true,
         logging: false,
       });
-      const link = document.createElement('a');
-      link.download = `oncloud9-plan-${Date.now()}.png`;
-      link.href = canvas.toDataURL('image/png');
-      link.click();
+      const dataUrl = canvas.toDataURL('image/png');
+      // mobile Safari fallback: open in new tab so user can save
+      const newTab = window.open();
+      if (newTab) {
+        newTab.document.write(`<img src="${dataUrl}" style="max-width:100%">`);
+        newTab.document.title = 'On Cloud 9 Plan';
+      } else {
+        // desktop: direct download
+        const link = document.createElement('a');
+        link.download = `oncloud9-plan.png`;
+        link.href = dataUrl;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+    } catch (err) {
+      alert('ไม่สามารถสร้างรูปได้: ' + err.message);
     } finally {
       setDownloading(false);
     }
