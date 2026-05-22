@@ -361,12 +361,15 @@ function PlannerView({ visibleMemberIds, filterMemberIds, planSelections, onOpen
 
       {/* Timeline mode */}
       {plannerMode === 'timeline' && activeDate !== 'all' && (
-        <TimelineView
-          date={activeDate}
-          planSelections={planSelections}
-          visibleMemberIds={visibleMemberIds}
-          onCellClick={onCellClick}
-        />
+        <>
+          <FanmeetSection date={activeDate} fanmeetPlan={fanmeetPlan} setFanmeetPlan={setFanmeetPlan} />
+          <TimelineView
+            date={activeDate}
+            planSelections={planSelections}
+            visibleMemberIds={visibleMemberIds}
+            onCellClick={onCellClick}
+          />
+        </>
       )}
 
       {/* Activity mode: per date */}
