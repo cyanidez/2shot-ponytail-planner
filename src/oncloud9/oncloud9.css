@@ -1209,10 +1209,12 @@
   border-bottom: 1px solid #ffffff08;
   border-right: 1px solid #ffffff08;
 }
+.oc9-tl-table tbody tr:nth-child(odd) .oc9-tl-td-time,
+.oc9-tl-table tbody tr:nth-child(odd) .oc9-tl-td-cell { background: #13131e; }
+.oc9-tl-table tbody tr:nth-child(even) .oc9-tl-td-time,
+.oc9-tl-table tbody tr:nth-child(even) .oc9-tl-td-cell { background: #0d0d12; }
 .oc9-tl-table tbody tr:hover .oc9-tl-td-time,
-.oc9-tl-table tbody tr:hover .oc9-tl-td-cell {
-  background: #ffffff06;
-}
+.oc9-tl-table tbody tr:hover .oc9-tl-td-cell { background: #1e1a30; }
 .oc9-tl-member {
   font-size: 11px;
   font-weight: 500;
