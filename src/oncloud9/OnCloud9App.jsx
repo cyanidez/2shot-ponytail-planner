@@ -291,17 +291,25 @@ function PlannerView({ visibleMemberIds, filterMemberIds, planSelections, onOpen
 
   return (
     <div className="oc9-planner">
+      {/* Mode toggle */}
+      <div className="oc9-mode-toggle-row">
+        <button className={`oc9-mode-btn ${plannerMode === 'activity' ? 'active' : ''}`} onClick={() => handleSetMode('activity')}>📋 กิจกรรม</button>
+        <button className={`oc9-mode-btn ${plannerMode === 'timeline' ? 'active' : ''}`} onClick={() => handleSetMode('timeline')}>🗓 ตาราง</button>
+      </div>
+
       {/* Date selector + member filter button */}
       <div className="oc9-planner-topbar">
         <div className="oc9-date-tabs">
-          <button
-            className={`oc9-date-tab ${activeDate === 'all' ? 'active' : ''}`}
-            style={{ '--dc': '#38bdf8' }}
-            onClick={() => setActiveDate('all')}
-          >
-            <span className="oc9-date-day">ALL</span>
-            <span className="oc9-date-num">ทุกวัน</span>
-          </button>
+          {plannerMode === 'activity' && (
+            <button
+              className={`oc9-date-tab ${activeDate === 'all' ? 'active' : ''}`}
+              style={{ '--dc': '#38bdf8' }}
+              onClick={() => setActiveDate('all')}
+            >
+              <span className="oc9-date-day">ALL</span>
+              <span className="oc9-date-num">ทุกวัน</span>
+            </button>
+          )}
           {eventDates.map(d => {
             const [y, m, dd] = d.split('-').map(Number);
             const day = new Date(y, m - 1, dd).getDay();
@@ -319,15 +327,9 @@ function PlannerView({ visibleMemberIds, filterMemberIds, planSelections, onOpen
             );
           })}
         </div>
-        <div className="oc9-planner-right-controls">
-          <div className="oc9-mode-toggle">
-            <button className={`oc9-mode-btn ${plannerMode === 'activity' ? 'active' : ''}`} onClick={() => handleSetMode('activity')}>📋</button>
-            <button className={`oc9-mode-btn ${plannerMode === 'timeline' ? 'active' : ''}`} onClick={() => handleSetMode('timeline')}>🗓</button>
-          </div>
-          <button className={`oc9-filter-toggle ${filterCount > 0 ? 'active' : ''}`} onClick={onOpenFilterModal}>
-            🔍 {filterCount > 0 ? `${filterCount} คน` : <span>Filter by<br/>member</span>}
-          </button>
-        </div>
+        <button className={`oc9-filter-toggle ${filterCount > 0 ? 'active' : ''}`} onClick={onOpenFilterModal}>
+          🔍 {filterCount > 0 ? `${filterCount} คน` : <span>Filter by<br/>member</span>}
+        </button>
       </div>
 
       {/* Activity filter icons — activity mode only */}
