@@ -293,8 +293,8 @@ function PlannerView({ visibleMemberIds, filterMemberIds, planSelections, onOpen
     <div className="oc9-planner">
       {/* Mode toggle */}
       <div className="oc9-mode-toggle-row">
-        <button className={`oc9-mode-btn ${plannerMode === 'activity' ? 'active' : ''}`} onClick={() => handleSetMode('activity')}>📋 กิจกรรม</button>
-        <button className={`oc9-mode-btn ${plannerMode === 'timeline' ? 'active' : ''}`} onClick={() => handleSetMode('timeline')}>🗓 ตาราง</button>
+        <button className={`oc9-mode-btn ${plannerMode === 'activity' ? 'active' : ''}`} onClick={() => handleSetMode('activity')}>📋 ดูตามกิจกรรม</button>
+        <button className={`oc9-mode-btn ${plannerMode === 'timeline' ? 'active' : ''}`} onClick={() => handleSetMode('timeline')}>🗓 ดูตามเวลา</button>
       </div>
 
       {/* Date selector + member filter button */}
