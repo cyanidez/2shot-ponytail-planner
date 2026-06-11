@@ -13,7 +13,8 @@ import {
   getLane,
   rounds,
   eventDates,
-  getSlotImageData
+  getSlotImageData,
+  memberScheduleConfig
 } from './data/members';
 
 // LocalStorage keys
@@ -339,6 +340,12 @@ function App() {
             📅  Schedule
           </button>
           <button
+            className={`tab-button ${activeTab === 'byMember' ? 'active' : ''}`}
+            onClick={() => setActiveTab('byMember')}
+          >
+            👥 By Member
+          </button>
+          <button
             className={`tab-button ${activeTab === 'summary' ? 'active' : ''}`}
             onClick={() => setActiveTab('summary')}
           >
@@ -346,13 +353,15 @@ function App() {
           </button>
         </nav>
 
-        {activeTab === 'schedule' ? (
+        {activeTab === 'now' ? (
+          <NowView activities={activities} planSelections={planSelections} />
+        ) : activeTab === 'schedule' ? (
           <ScheduleView activities={filteredActivities} planSelections={planSelections} onOpenTicketModal={openTicketModal} />
+        ) : activeTab === 'byMember' ? (
+          <MemberScheduleView selectedMembers={selectedMembers} planSelections={planSelections} onOpenTicketModal={openTicketModal} />
         ) : activeTab === 'summary' ? (
           <SummaryView activities={filteredActivities} selectedMembers={selectedMembers} />
-        ) : (
-          <NowView activities={activities} planSelections={planSelections} />
-        )}
+        ) : null}
       </main>
 
       <footer className="footer">
@@ -782,6 +791,112 @@ function NowView({ activities, planSelections }) {
           </div>
         </div>
       )}
+    </div>
+  );
+}
+
+
+
+function MemberScheduleView({ selectedMembers, planSelections, onOpenTicketModal }) {
+  const [search, setSearch] = useState('');
+
+  const baseMembers = selectedMembers.length === 0
+    ? members
+    : members.filter(m => selectedMembers.includes(m.id));
+
+  const displayMembers = search.trim()
+    ? baseMembers.filter(m => m.name.toLowerCase().includes(search.toLowerCase()))
+    : baseMembers;
+
+  return (
+    <div className="member-schedule-view">
+      <div className="member-search-bar">
+        <input
+          type="text"
+          className="member-search-input"
+          placeholder="ค้นหาเมมเบอร์..."
+          value={search}
+          onChange={e => setSearch(e.target.value)}
+        />
+      </div>
+      <div className="members-grid">
+        {displayMembers.map(member => {
+          const satConfig = memberScheduleConfig[eventDates[0]];
+          const sunConfig = memberScheduleConfig[eventDates[1]];
+
+          const satRounds = satConfig?.laneConfig[member.id]
+            ? Object.keys(satConfig.laneConfig[member.id]).map(Number).sort((a, b) => a - b)
+            : [];
+          const sunRounds = sunConfig?.laneConfig[member.id]
+            ? Object.keys(sunConfig.laneConfig[member.id]).map(Number).sort((a, b) => a - b)
+            : [];
+
+          if (satRounds.length === 0 && sunRounds.length === 0) return null;
+
+          return (
+            <div key={member.id} className="member-rounds-card">
+              <div className="member-card-name" style={{ color: member.color }}>
+                {member.name}
+                <span className="member-card-gen">Gen {member.generation}</span>
+              </div>
+              {satRounds.length > 0 && (
+                <div className="member-card-date-row">
+                  <span className="date-label sat-label">SAT</span>
+                  <div className="round-chips">
+                    {satRounds.map(round => {
+                      const slot = satConfig?.slotImages?.[member.id]?.[String(round)];
+                      const key = `${member.id}_${eventDates[0]}_${round}`;
+                      const ticketCount = planSelections[key];
+                      return (
+                        <div
+                          key={round}
+                          className={`round-chip${ticketCount > 0 ? ' round-chip-selected' : ''}`}
+                          style={ticketCount > 0
+                            ? { borderColor: member.color, backgroundColor: `${member.color}25`, cursor: 'pointer' }
+                            : { borderColor: `${member.color}60`, cursor: 'pointer' }
+                          }
+                          onClick={() => onOpenTicketModal(member.id, round, member.name, getRoundTime(round), eventDates[0])}
+                        >
+                          <span className="round-chip-num" style={{ color: member.color }}>R{round}</span>
+                          <span className="round-chip-time">{getRoundTime(round).split(' - ')[0]}</span>
+                          {ticketCount > 0 && <span className="round-chip-count" style={{ color: member.color }}>×{ticketCount}</span>}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+              {sunRounds.length > 0 && (
+                <div className="member-card-date-row">
+                  <span className="date-label sun-label">SUN</span>
+                  <div className="round-chips">
+                    {sunRounds.map(round => {
+                      const slot = sunConfig?.slotImages?.[member.id]?.[String(round)];
+                      const key = `${member.id}_${eventDates[1]}_${round}`;
+                      const ticketCount = planSelections[key];
+                      return (
+                        <div
+                          key={round}
+                          className={`round-chip sun-chip${ticketCount > 0 ? ' round-chip-selected' : ''}`}
+                          style={ticketCount > 0
+                            ? { borderColor: member.color, backgroundColor: `${member.color}25`, cursor: 'pointer' }
+                            : { borderColor: `${member.color}60`, cursor: 'pointer' }
+                          }
+                          onClick={() => onOpenTicketModal(member.id, round, member.name, getRoundTime(round), eventDates[1])}
+                        >
+                          <span className="round-chip-num" style={{ color: member.color }}>R{round}</span>
+                          <span className="round-chip-time">{getRoundTime(round).split(' - ')[0]}</span>
+                          {ticketCount > 0 && <span className="round-chip-count" style={{ color: member.color }}>×{ticketCount}</span>}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }
